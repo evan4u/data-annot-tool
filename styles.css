@@ -1,7 +1,4 @@
 
-#text_box {
-	
-}
 
 body {
 
@@ -62,4 +59,7 @@ button {
 	
 }
 
-
+#finishButton {
+	background:#1ff;
+	margin-bottom: 10px;
+}

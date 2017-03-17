@@ -6,6 +6,7 @@ $(function() {
 	$( ".context" ).html(html);
 
 	var annotatedData = [];
+	var highlightUnlocked = false;
 
 	var words = [];
 
@@ -17,22 +18,15 @@ $(function() {
 	    	options[$(this).val()] = $(this).is(":checked");
 	    }); 
 
-
-	  //  options = {
-	   // 	'Evan': {'debug': false,
-	   // 			'separateWordSearch':true, }, 
-	    //	'My': { 'debug': false,
-	    //			'separateWordSearch':true, }, 
-	    //}
-	    //console.log($(this).val());
-	    // Updates highlited keywords
-	    
-	    $(".context").unmark({
-	    	done: function() {
-	    		console.log(words)
-	        	$(".context").mark(words, options);
-	    	}
-	    });
+	    if (highlightUnlocked) {
+		    $(".context").unmark({
+		    	done: function() {
+		    		words.push(keyword);
+		    		console.log(words)
+		        	$(".context").mark(words, options);
+		    	}
+		    });
+		}
   	};
 
 
@@ -40,14 +34,10 @@ $(function() {
 		var token = removeSpaces(window.getSelection().toString());
 		//var token = window.getSelection().toString();
 		if (token != undefined) {
-
 			var r = confirm('Wound you like to highlight '+token);
 			if (r == true) {
-				
-			    words.push(token);
 			    mark(token);
 			} 
-			
 		}
 		else {
 			s = window.getSelection();
@@ -98,15 +88,35 @@ $(function() {
   	//	console.log($(this).val());
   	//});
 
-  	$("#inputClass").keyup(function(event){
+  	$("#inputClass").keyup(function(event){  		
 	    if(event.keyCode == 13){
-	        console.log($(this).val());
-	        addClassButton($(this).val());
+	        // NOT SPACES
+	        if (validClassInput($(this).val())) {
+	        	addClassButton($(this).val())
+	        }
 	    } 
 	    else if (event.keyCode == 32){
 	    	console.log(annotatedData);
 	    }
 	});
+
+	function validClassInput(str) {
+	/*
+		Input is valid if it is not all spaces or empty
+	*/	
+		if (str == "") {
+			return false;
+		}
+
+		var count = 0;
+		for (var i = 0; i < str.length; i++) {
+			if (str[i] == ' ') {
+				count++;
+			}
+		}
+
+		return count != str.length && !highlightUnlocked;
+	}
 
 	function addClassButton(type) {
   		//Create an input type dynamically.   
@@ -134,5 +144,13 @@ $(function() {
 	
 	}
 
+	$("#finishButton").click(function() {
+		highlightUnlocked = !highlightUnlocked;
+		if (highlightUnlocked) {
+			$("#finishButton").text("Add class");
+		} else {
+			$("#finishButton").text("Start Annotating");
+		}
+	});
 
 });
