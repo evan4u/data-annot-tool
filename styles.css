@@ -4,17 +4,15 @@
 }
 
 body {
-  margin: 15px;
+
 }
 
-div.search span,
-div.search input[name="keyword"] {
-  display: block;
+#body-width {
+	width: 85%;
+	margin: auto;
 }
 
-div.search input[name="keyword"] {
-  margin-top: 4px;
-}
+
 
 div.panel {
   margin-bottom: 15px;
@@ -38,7 +36,6 @@ mark {
 .panel-default > .panel-body-custom {
 	
 	
-	
 	padding-right: 0;
 	background: #AFA; 
 
@@ -55,4 +52,14 @@ mark {
 	background: #1F4; 
 	color: #000;/* FONT  */
 }
+
+button {
+	width:100%;
+	margin-top: 10px;
+}
+
+#buttonClass {
+	
+}
+
 
