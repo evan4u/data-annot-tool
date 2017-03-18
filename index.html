@@ -11,6 +11,8 @@
 	<link rel="stylesheet" href="styles.css">
 	<script src="test.js"></script>
 
+	<script src="FileSaver.js"></script>
+
 </head>
 
 <body>
@@ -25,7 +27,12 @@
 	    <div class="col-md-3">
 	        <span>Type in a keyword:</span>
 			<input type="text" name="keyword" class="form-control input-sm" placeholder="Search here..">
+			<button id="downloadButton"> Download </button>
 	    </div>
+
+
+
+
 
 		<div class="col-xs-6">
 			<div class="panel panel-default">
@@ -41,11 +48,14 @@
 
 	    <div class="col-sm-3" >
 		    <div class="panel panel-default">
-				<input type="text" id="inputClass" name="keyword" class="form-control input-sm" placeholder="Search term..." maxlength="26">
+				<input type="text" id="inputClass" name="keyword" class="form-control input-sm" placeholder="Add a class..." maxlength="26">
 
 			</div>
-			<button id="finishButton" > Finish </button>
-			<p id="buttonClass">Classes:</p>
+
+			<div class="buttonList">
+				<button id="finishButton" > Start Annotating </button>
+				<p id="buttonClass">Click to add to a class:</p>
+			</div>
 		 </div>
 
 	    	
