@@ -15,7 +15,7 @@ $(function() {
 
 	var mark = function(keyword) {
     	// Determine selected options
-	    var options = {};
+	    var options = {'accuracy': "exactly"};
 	    
 	    $("input[name='opt[]']").each(function() {	
 	    	options[$(this).val()] = $(this).is(":checked");
