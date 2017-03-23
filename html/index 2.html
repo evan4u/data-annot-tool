@@ -21,6 +21,13 @@ Author: Evan Bernardez, Macquarie University
       <link rel="stylesheet" href="../css/bootstrap.css">
       <script type="text/javascript" src="../bootstrap.min.js"></script>
 
+      <script src="../jquery.mark.min.js"></script>
+      
+      <link rel="../stylesheet" href="styles.css">
+      <script src="../test.js"></script>
+
+      <script src="../FileSaver.js"></script>
+
 </head>
 
 <body style="background-color: #c0c0c0;">
@@ -73,8 +80,12 @@ Author: Evan Bernardez, Macquarie University
                               <li class="dropdown" >
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Class Selection <b class="caret"></b></a>
                                     <ul class="dropdown-menu" >
-                                          <li> <a href="javascript:void(0);" data-bind="event:{click: changeToNormal}">ClassExample</a> </li>
+                                          <li> <a href="javascript:void(0);" data-bind="event:{click: changeToNormal}">ClassExample1</a> </li>
                                           <li class="divider"></li>
+                                          <li> <a href="javascript:void(0);" data-bind="event:{click: changeToNormal}">ClassExample2</a> </li>
+                                          <li class="divider"></li>
+                                          <li class="divider"></li>
+                                          <li> <a href="javascript:void(0);" data-bind="event:{click: changeToNormal}">Edit</a> </li>
                                           
                                     </ul>
                               </li>
@@ -86,21 +97,11 @@ Author: Evan Bernardez, Macquarie University
             </nav>
       </div>
 
-      <div class="searchbox-div">
-            <p style="padding-top:0px; padding-left: 5px;">Class Input</p>
+      <div class="searchbox-div" style="height:0;">
 
-            <div id="text-field-div">
-
-                  <div class="input-group">
-
-                        <input id="text_field" spellcheck="false" type="text" class="form-control awesomplete" placeholder="enter sentence here...">
-                        <span class="input-group-btn">
-                              <button id="addButton-id" class="btn btn-secondary" type="button">Submit</button>
-                        </span>
-                        </div>
-                  </div>
-
-                 
+            <span class="input-group-btn">
+                  <button  type="button" style="width:0px; border: 0;"></button>
+            </span>
 
       </div> <!-- END OF searchbox-div -->
 
@@ -114,14 +115,22 @@ Author: Evan Bernardez, Macquarie University
                                           <h4 class="panel-title">
                                                 <a href="javascript:void(0);"  class="accordion-toggle" data-toggle="collapse"  data-target="#collapseOne">
                                                       <span class="glyphicon glyphicon-minus"></span>
-                                                      Submitted Text
+                                                      Annotation Area
                                                 </a>
                                           </h4>
                                     </div>
 
 
                                     <div id="collapseOne" class="panel-collapse collapse in">
-                                         CHUCK INPUT HERE
+                                        <div class="panel panel-default">
+                        <div class="panel-body context">
+                              Lorem ipsum dolor sit āmet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, nò sea takimata
+                              sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+                              rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                              At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie çonsequat, vel illum dolore
+                              eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit prāesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,
+                        </div>
+                  </div>
                                     </div>
                               </div>
 
@@ -156,6 +165,7 @@ Author: Evan Bernardez, Macquarie University
                                     </div>
                                     <div id="collapseThree" class="panel-collapse collapse">
                                           <div class="panel-body">
+                                          fsdfds
                                                 <pre data-bind="text: result"></pre>
                                           </div>
                                     </div>

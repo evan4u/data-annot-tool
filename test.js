@@ -2,19 +2,21 @@
 
 $(function() {
 	// ADD CONTENT IN BODY
+
 	var html = " My name is Evan and I like to sleep. I study at Macquarie University where I study engineering. Here are some noises animals make: meow, woof, ruff, bark, koo koo, grrrr, moo, ribbit, hsssss, and that is all i can remember. My name is Evan and I like to sleep. I study at Macquarie University where I study engineering. My name is Evan and I like to sleep. I study at Macquarie University where I study engineering. Here are some noises animals make: meow, woof, ruff, bark, koo koo, grrrr, moo, ribbit, hsssss, and that is all i can remember. My name is Evan and I like to sleep. I study at Macquarie University where I study engineering. My name is Evan and I like to sleep. I study at Macquarie University where I study engineering. Here are some noises animals make: meow, woof, ruf My name is Evan and I like to sleep. I study at Macquarie University where I study engineering. My name is Evan and I like to sleep. I study at Macquarie University where I study engineering. Here are some noises animals make: meow, woof, ruff, bark, koo koo, grrrr, moo, ribbit, hsssss, and that is all i can remember. My name is Evan and I like to sleep. I study at Macquarie University where I study engineering. My name is Evan and I like to sleep. I study at Macquarie University where I study engineering. Here are some noises animals make: meow, woof, ruff, bark, koo koo, grrrr, moo, ribbit, hsssss, and that is all i can remember."
 	$( ".context" ).html(html);
 
 	var annotatedData = [];
 	var annotatedDataOrganised = {};
 
-	var highlightUnlocked = false;
+	var highlightUnlocked = true; // NEEDS TO FALSE
 	var numOfButtons = 0;
 	var words = [];
 
 
 	var mark = function(keyword) {
     	// Determine selected options
+
 	    var options = {'accuracy': "exactly"};
 	    
 	    $("input[name='opt[]']").each(function() {	
@@ -24,6 +26,7 @@ $(function() {
 	    
 		$(".context").unmark({
 		    done: function() {
+
 		    	words.push(keyword);
 		    	console.log(words)
 		        $(".context").mark(words, options);
@@ -34,6 +37,7 @@ $(function() {
 
 
 	$(".context").mouseup(function() {
+
 		if (highlightUnlocked) {
 			var token = removeSpaces(window.getSelection().toString());
 			//var token = window.getSelection().toString();
@@ -209,5 +213,14 @@ $(function() {
 		console.log(annotatedData[0]);
 		
 	}
+
+
+	// NEED FOR TABS
+$('.collapse').on('shown.bs.collapse', function(){
+      $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function(){
+      $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+
 
 });
