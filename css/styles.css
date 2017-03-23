@@ -1,0 +1,238 @@
+.ui-menu .ui-menu-item a{
+    color: #black;
+    border-radius: 0px;
+    display:block
+}
+
+
+
+.ui-state-focus {
+    color:white;
+    background: blue;
+
+}
+
+.ui-helper-hidden-accessible { display:none; }
+
+.ui-autocomplete { max-height: 100px; overflow-y: scroll; overflow-x: hidden;}
+
+
+ul.ui-autocomplete {
+      list-style: none;
+      list-style-type: none;
+      padding: 5px;
+      margin: 0px;
+      border-color: blue;
+      border-radius: 2px;
+}
+
+.ui-menu {
+      position: inherit;
+      background-color: white;
+}
+
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+
+    position: absolute;
+    top: 143px;
+    left: 45%;
+    animation: spin 2s linear infinite;
+    z-index: 5;
+    visibility: hidden;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+p {
+      font-size: 15px;
+}
+
+a {
+      font-size: 15px;
+}
+
+
+pre{white-space:pre-wrap;}
+
+
+/**
+      style for sub menu
+**/
+
+.marginBottom-0 {
+      margin-bottom:0;
+}
+
+.dropdown-submenu{
+      position:relative;
+}
+.dropdown-submenu>.dropdown-menu{
+      top:0;
+      left:100%;
+      margin-top:-6px;
+      margin-left:-1px;
+      -webkit-border-radius:0 6px 6px 6px;
+      -moz-border-radius:0 6px 6px 6px;
+      border-radius:0 6px 6px 6px;
+}
+
+.dropdown-submenu>a:after{
+      display:block;
+      content:" ";
+      float:right;
+      width:0;
+      height:0;
+      border-color:transparent;
+      border-style:solid;
+      border-width:5px 0 5px 5px; /* TRIANLE POSITION */
+      border-left-color:#cccccc;
+      margin-top:5px;
+      margin-right:-90px;
+}
+
+.dropdown-submenu:hover>a:after{
+      border-left-color:#555;
+}
+
+.dropdown-submenu.pull-left{
+      float:none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+      left:-100%;
+      margin-left:10px;
+      -webkit-border-radius:6px 0 6px 6px;
+      -moz-border-radius:6px 0 6px 6px;
+      border-radius:6px 0 6px 6px;
+}
+
+
+
+
+
+
+/*
+  Style The Dropdown Button
+  Retrieved from http://www.w3schools.com/css/css_dropdowns.asp
+*/
+
+
+div {
+      display: block;
+}
+
+
+
+
+.looktable {
+      width: 60%;
+      margin: 20px;
+}
+
+.settings-div {
+
+      margin: auto;
+      background: #c0c0c0; /*To change color of backgroun */
+      border: 3px solid #FFF;
+      width: 95%;
+}
+
+
+.results-div {
+      overflow:auto;
+      margin: auto;
+      border: 3px;
+      padding-top:5px;
+      width: 95%;
+
+      color: black;
+}
+
+h1 {
+      white-space:nowrap;
+}
+
+#main-container {
+      position: absolute;
+
+}
+
+.searchbox-div {
+      margin: auto;
+      border: 3px solid #FFF;
+      background: #001f3f; /*To change color of backgroun */
+      padding: 10px;
+      width: 95%;
+      height: 210px;
+      color: #FFF;
+
+}
+
+#text-field-div {
+      width:85%;
+}
+
+.titiletext {
+       color: white;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #000000;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #A7B3A5;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #000000;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgb(0,0,0);
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: white;
+
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #A7B3A5}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+
+
+a {
+    text-decoration: none !important;
+}

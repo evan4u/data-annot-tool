@@ -1,8 +1,13 @@
 
-
-body {
-
+h1 {
+	font-size: 2em;
 }
+
+mark{
+    background: yellow;
+    color: black;
+}
+
 
 #body-width {
 	width: 85%;
@@ -13,10 +18,12 @@ body {
 
 div.panel {
   margin-bottom: 15px;
+  color: #000;
 }
 
 div.panel .panel-body p:last-child {
   margin-bottom: 0;
+  color: #000;
 }
 
 mark {
@@ -24,7 +31,7 @@ mark {
 }
 
 .panel-default > .panel-heading-custom {
-	background: #ff0000; 
+	background: #2a4380; 
 	color: #fff; 
 }
 
@@ -34,13 +41,13 @@ mark {
 	
 	
 	padding-right: 0;
-	background: #AFA; 
+	background: #6c8ad5; 
 
-	color: #000;/* FONT  */
+	color: black;/* FONT  */
 }
 
 .panel-default > .context {
-	background: #FFF;
+	background: #F5F5F5;
 	overflow-y: scroll;
 	height:400px;
 
@@ -48,8 +55,8 @@ mark {
 
 
 .panel-default > .footer-custom {
-	background: #1F4; 
-	color: #000;/* FONT  */
+	background: #6c8ad5; 
+	color: black;/* FONT  */
 }
 
 button {
