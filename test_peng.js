@@ -254,5 +254,35 @@ $('.collapse').on('shown.bs.collapse', function(){
 
 		$('#entity-result').html(outputStr)
 	}
-	//$('#entity-result').html("outputStr")
+
+	
+
+	function create_a_class(className) {
+		var noSpace = className.replace(/\s/g, '');
+		$(".dropdown ul").prepend('<li><a class="'+"classButtons"+'">'+className+'</a></li><li class="divider"></li>');
+		
+		console.log("cdsd: "+noSpace);
+		$('.classButtons').click(function() {
+			addTokensToClass(className);
+	  		addToEntResult();
+			console.log("went here");
+		});
+	}
+
+	$("#edit" ).click(function() {
+		console.log("here");
+		var x;
+    	var className=prompt("Please enter class:","Person");
+	    if (name!=null){
+	       create_a_class(className);
+	   	}
+
+
+	});
 });
+
+
+
+
+
+
