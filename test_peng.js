@@ -131,7 +131,7 @@ $(function() {
 
 	function addClassButton(type) {
   		//Create an input type dynamically.   
-  		var element = document.createElement("button");
+  		var element = document.createElement("li");
   		//Assign different attributes to the element. 
   		
   		buttonText = document.createTextNode(type);
@@ -144,10 +144,10 @@ $(function() {
   			addTokensToClass($(this).val())
   		};
   		element.appendChild(buttonText);
-  		var foo = document.getElementById("buttonClass");
+  		var foo = document.getElementById("classList");
   		//Append the element in page (in span).  
   		foo.appendChild(element);
-  		$('#inputClass').val("");
+  		
   		numOfButtons++;
 	}
 
@@ -163,8 +163,9 @@ $(function() {
 
 		words = [];
 		mark("");
-	
 	}
+
+
 
 	$("#finishButton").click(function() {
 		if (numOfButtons > 0) {
@@ -216,11 +217,42 @@ $(function() {
 
 
 	// NEED FOR TABS
-	$('.collapse').on('shown.bs.collapse', function(){
-	      $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
-	}).on('hidden.bs.collapse', function(){
-	      $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+$('.collapse').on('shown.bs.collapse', function(){
+      $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function(){
+      $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+
+	$( "#c1" ).click(function() {
+  		className = $("#c1 a").html();
+  		addTokensToClass(className);
+
+  		addToEntResult();
 	});
 
+	$( "#c2" ).click(function() {
+  		className = $("#c2 a").html();
+  		addTokensToClass(className);
 
+  		addToEntResult();
+	});
+	
+
+	function addToEntResult() {
+		// put into a single dict
+		outputStr = "";
+		for (var key in annotatedDataOrganised) {
+			outputStr += key+":\n";
+  			if (annotatedDataOrganised.hasOwnProperty(key)) {
+  				outputStr += annotatedDataOrganised[key]+"\n"
+    			
+  			}
+
+  			outputStr += "\n\n\n";
+  			console.log(outputStr);
+		}
+
+		$('#entity-result').html(outputStr)
+	}
+	//$('#entity-result').html("outputStr")
 });

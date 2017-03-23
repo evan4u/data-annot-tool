@@ -14,8 +14,6 @@ Author: Evan Bernardez, Macquarie University
 
 
       <link rel="stylesheet" href="../css/styles.css">
-      <link rel="stylesheet" href="../css/mic-styles.css">
-
 
       <!-- Bootstrap -->
       <link rel="stylesheet" href="../css/bootstrap.css">
@@ -23,10 +21,11 @@ Author: Evan Bernardez, Macquarie University
 
       <script src="../jquery.mark.min.js"></script>
       
-      <link rel="../stylesheet" href="styles.css">
-      <script src="../test.js"></script>
+      
+      
 
       <script src="../FileSaver.js"></script>
+      <link rel="../stylesheet" href="../styles.css">
 
 </head>
 
@@ -79,13 +78,13 @@ Author: Evan Bernardez, Macquarie University
                               <!-- Class Selection -->
                               <li class="dropdown" >
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Class Selection <b class="caret"></b></a>
-                                    <ul class="dropdown-menu" >
-                                          <li> <a href="javascript:void(0);" data-bind="event:{click: changeToNormal}">ClassExample1</a> </li>
+                                    <ul class="dropdown-menu" id="classList" >
+                                          <li id="c1" value="ClassExample1"> <a>ClassExample1</a> </li>
                                           <li class="divider"></li>
-                                          <li> <a href="javascript:void(0);" data-bind="event:{click: changeToNormal}">ClassExample2</a> </li>
+                                          <li id="c2">  <a>ClassExample2</a> </li>
                                           <li class="divider"></li>
                                           <li class="divider"></li>
-                                          <li> <a href="javascript:void(0);" data-bind="event:{click: changeToNormal}">Edit</a> </li>
+                                          <li> <a>Edit</a> </li>
                                           
                                     </ul>
                               </li>
@@ -105,11 +104,10 @@ Author: Evan Bernardez, Macquarie University
 
       </div> <!-- END OF searchbox-div -->
 
-            <div class="results-div">
+      
+      <div class="results-div">
                   <div class="container" style="width:100%; padding:0;" >
                         <div class="panel-group" id="accordion" >
-
-
                               <div class="panel panel-default" style="padding:5px; border:none; border-radius: 0">
                                     <div style="padding-left: 0;" class="panel-heading">
                                           <h4 class="panel-title">
@@ -119,37 +117,13 @@ Author: Evan Bernardez, Macquarie University
                                                 </a>
                                           </h4>
                                     </div>
-
-
                                     <div id="collapseOne" class="panel-collapse collapse in">
-                                        <div class="panel panel-default">
-                        <div class="panel-body context">
-                              Lorem ipsum dolor sit āmet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, nò sea takimata
-                              sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-                              rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                              At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie çonsequat, vel illum dolore
-                              eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit prāesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,
-                        </div>
-                  </div>
-                                    </div>
-                              </div>
-
-
-
-
-
-                              <div class="panel panel-default" style="padding:5px; border:none; border-radius: 0">
-                                    <div style="padding-left: 0;" class="panel-heading">
-                                          <h4 class="panel-title">
-                                                <a href="javascript:void(0);"  class="accordion-toggle" data-toggle="collapse"  data-target="#collapseOne">
-                                                      <span class="glyphicon glyphicon-minus"></span>
-                                                      Entity Annotation Results
-                                                </a>
-                                          </h4>
-                                    </div>
-                                    <div id="collapseTwo" class="panel-collapse collapse in">
                                           <div class="panel-body">
-                                               fdf
+                                                <div class="panel panel-default">
+                                                      <div class="panel-body context">
+                                                      CONTENT GOES HERE
+                                                       </div>
+                                                </div>
                                           </div>
                                     </div>
                               </div>
@@ -157,31 +131,49 @@ Author: Evan Bernardez, Macquarie University
                               <div class="panel panel-default" style="padding:5px; border:none; border-radius: 0">
                                     <div style="padding-left: 0;" class="panel-heading" style="border: none">
                                           <h4 class="panel-title">
-                                                <a href="javascript:void(0);" class="accordion-toggle" data-toggle="collapse"  data-target="#collapseFive">
+                                                <a href="javascript:void(0);" class="accordion-toggle" data-toggle="collapse"  data-target="#collapseThree">
                                                       <span class="glyphicon glyphicon-plus"></span>
-                                                      Relation Annotation Results
+                                                      Entity Result
                                                 </a>
                                           </h4>
                                     </div>
                                     <div id="collapseThree" class="panel-collapse collapse">
                                           <div class="panel-body">
-                                          fsdfds
-                                                <pre data-bind="text: result"></pre>
+                                                <pre id="entity-result"></pre>
                                           </div>
                                     </div>
                               </div>
+                              <div class="panel panel-default" style="padding:5px; border:none; border-radius: 0">
+                                    <div style="padding-left: 0;" class="panel-heading" style="border: none">
+                                          <h4 class="panel-title">
+                                                <a href="javascript:void(0);" class="accordion-toggle" data-toggle="collapse"  data-target="#collapseFour">
+                                                      <span class="glyphicon glyphicon-plus"></span>
+                                                      Relation Result
+                                                </a>
+                                          </h4>
+
+                                    </div>
+                                    <div id="collapseFour" class="panel-collapse collapse">
+                                          <div class="panel-body">
+                                                <pre id="asp-text" data-bind="text: asp"></pre>
+                                          </div>
+                                    </div>
+                              </div>
+                             
                         </div>
                   </div>
             </div>
       </div>
 
            
-            
 
 
             <form hidden id="myForm">
                 <label for="search">Save as...</label>
                 <input type="text" id="textSave" name="q">
             </form>
+
+            <style>mark{background:yellow;}</style>
+            <script src="../test_peng.js"></script>
 </body>
 </html>
