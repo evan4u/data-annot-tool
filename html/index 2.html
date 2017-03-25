@@ -47,7 +47,7 @@ Author: Evan Bernardez, Macquarie University
                   <!-- Collect the nav links, forms, and other content for toggling -->
                   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                              <li class="dropdown">
+                           `   <li class="dropdown">
                                     <!-- FILE -->
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"> File <b class="caret"></b></a>
                                     <ul class="dropdown-menu" >
@@ -79,14 +79,11 @@ Author: Evan Bernardez, Macquarie University
                               <li class="dropdown" >
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Class Selection <b class="caret"></b></a>
                                     <ul class="dropdown-menu" id="classList" >
-                                          <li id="c1" value="ClassExample1"> <a>ClassExample1</a> </li>
-                                          <li class="divider"></li>
-                                          <li id="c2">  <a>ClassExample2</a> </li>
                                           <li class="divider"></li>
                                           <li class="divider"></li>
                                           <li id="edit"> <a>Edit</a> </li>
-                                          
                                     </ul>
+
                               </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
@@ -96,11 +93,9 @@ Author: Evan Bernardez, Macquarie University
             </nav>
       </div>
 
-      <div class="searchbox-div" style="height:0;">
+      <div class="searchbox-div" id="buttonClass">
 
-            <span class="input-group-btn">
-                  <button  type="button" style="width:0px; border: 0;"></button>
-            </span>
+           
 
       </div> <!-- END OF searchbox-div -->
 
@@ -167,7 +162,6 @@ Author: Evan Bernardez, Macquarie University
 
            
 
-
             <form hidden id="myForm">
                 <label for="search">Save as...</label>
                 <input type="text" id="textSave" name="q">
@@ -176,6 +170,6 @@ Author: Evan Bernardez, Macquarie University
             <style>mark{background:yellow;}</style>
             <script src="../test_peng.js"></script>
 
-            
+
 </body>
 </html>

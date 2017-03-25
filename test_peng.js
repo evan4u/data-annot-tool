@@ -145,24 +145,33 @@ $(function() {
   		};
   		element.appendChild(buttonText);
   		var foo = document.getElementById("classList");
+  		element.style.color = "red";
   		//Append the element in page (in span).  
   		foo.appendChild(element);
   		
   		numOfButtons++;
 	}
 
-	function addTokensToClass(classAnnot) {
-		annotatedData.push({classAnnot: words});
-
-		if (classAnnot in annotatedDataOrganised) {
-			annotatedDataOrganised[classAnnot] = annotatedDataOrganised[classAnnot] + words;
-			console.log(annotatedDataOrganised);
-		} else {
-			annotatedDataOrganised[classAnnot] = words;
-		}
-
-		words = [];
-		mark("");
+	function addClassButton(type) {
+  		//Create an input type dynamically.   
+  		var element = document.createElement("button");
+  		//Assign different attributes to the element. 
+  		
+  		buttonText = document.createTextNode(type);
+  		
+	  	element.type = type;
+	  	element.value = type; // Really? You want the default value to be the type string?
+	  	
+	  	//element.name = type; // And the name too?
+  		element.onclick = function() { // Note this is a function
+  			addTokensToClass($(this).val())
+  		};
+  		element.appendChild(buttonText);
+  		var foo = document.getElementById("buttonClass");
+  		//Append the element in page (in span).  
+  		foo.appendChild(element);
+  		$('#inputClass').val("");
+  		numOfButtons++;
 	}
 
 
@@ -223,19 +232,7 @@ $('.collapse').on('shown.bs.collapse', function(){
       $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
 });
 
-	$( "#c1" ).click(function() {
-  		className = $("#c1 a").html();
-  		addTokensToClass(className);
-
-  		addToEntResult();
-	});
-
-	$( "#c2" ).click(function() {
-  		className = $("#c2 a").html();
-  		addTokensToClass(className);
-
-  		addToEntResult();
-	});
+	
 	
 
 	function addToEntResult() {
@@ -258,22 +255,25 @@ $('.collapse').on('shown.bs.collapse', function(){
 	
 
 	function create_a_class(className) {
-		var noSpace = className.replace(/\s/g, '');
-		$(".dropdown ul").prepend('<li><a class="'+"classButtons"+'">'+className+'</a></li><li class="divider"></li>');
-		
-		console.log("cdsd: "+noSpace);
-		$('.classButtons').click(function() {
-			addTokensToClass(className);
-	  		addToEntResult();
-			console.log("went here");
-		});
+		if (className != null) {
+			var noSpace = className.replace(/\s/g, '');
+			$(".dropdown ul").prepend('<li><a class="'+"classButtons"+'">'+className+'</a></li><li class="divider"></li>');
+			
+
+			$(".searchbox-div").append('<button style="background-color:black; color:white; margin-left: 5px; border-radius: 4px; outline:none;">'+className+'</button>');
+
+			console.log("cdsd: "+noSpace);
+			$('.classButtons').click(function() {
+				addTokensToClass(className);
+		  		addToEntResult();
+			});
+		}
 	}
 
 	$("#edit" ).click(function() {
-		console.log("here");
 		var x;
-    	var className=prompt("Please enter class:","Person");
-	    if (name!=null){
+    	var className=prompt("Please enter class:");
+	    if (name != null){
 	       create_a_class(className);
 	   	}
 

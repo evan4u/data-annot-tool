@@ -10,6 +10,7 @@ mark {
 }
 
 
+
 #body-width {
 	width: 85%;
 	margin: auto;
@@ -58,6 +59,8 @@ div.panel .panel-body p:last-child {
 button {
 	width:100%;
 	margin-top: 10px;
+	border-radius: 4px;
+	color: black;
 }
 
 
@@ -66,3 +69,5 @@ button {
 	background:#1ff;
 	margin-bottom: 10px;
 }
+
+
