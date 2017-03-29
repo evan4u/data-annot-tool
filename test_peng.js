@@ -16,17 +16,14 @@ $(function() {
 
 	var mark = function(keyword) {
     	// Determine selected options
-
 	    var options = {'accuracy': "exactly"};
 	    
 	    $("input[name='opt[]']").each(function() {	
 	    	options[$(this).val()] = $(this).is(":checked");
 	    }); 
-
 	    
 		$(".context").unmark({
 		    done: function() {
-
 		    	words.push(keyword);
 		    	console.log(words)
 		        $(".context").mark(words, options);
@@ -251,6 +248,15 @@ $(function() {
 		// http://stackoverflow.com/questions/8441915/tokenizing-strings-using-regular-expression-in-javascript
 	}
 	convertAnnotToText();
+
+
+
+	// switch
+	/// for asp toggle (dev mode)
+	$("[name='my-checkbox']").bootstrapSwitch();
+	$('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+		console.log("TOGGLE");
+	});
 });
 
 
