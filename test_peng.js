@@ -9,7 +9,7 @@ $(function() {
 	var annotatedData = [];
 	var annotatedDataOrganised = {};
 
-	var highlightUnlocked = true; // NEEDS TO FALSE
+	var highlightUnlocked = false; // NEEDS TO FALSE
 	var numOfButtons = 0;
 	var words = [];
 
@@ -35,7 +35,7 @@ $(function() {
 
 	$(".context").mouseup(function() {
 
-		if (highlightUnlocked) {
+		if (numOfButtons > 0) {
 			var token = removeSpaces(window.getSelection().toString());
 			//var token = window.getSelection().toString();
 			if (token != undefined) {
@@ -205,6 +205,8 @@ $(function() {
 				addTokensToClass(className);
 		  		addToEntResult();
 			});
+			numOfButtons++;
+			$("[name='my-checkbox']").bootstrapSwitch('disabled',false);
 			$("#classname").val('');
 		}
 	}
@@ -223,7 +225,6 @@ $(function() {
 
 		words = [];
 		mark("");
-
 	}
 
 
@@ -247,15 +248,19 @@ $(function() {
 		// TO DO THE INVERSE, USE THIS AS REFERENCE:
 		// http://stackoverflow.com/questions/8441915/tokenizing-strings-using-regular-expression-in-javascript
 	}
-	convertAnnotToText();
+	//convertAnnotToText();
 
 
 
 	// switch
 	/// for asp toggle (dev mode)
-	$("[name='my-checkbox']").bootstrapSwitch();
+	$("[name='my-checkbox']").bootstrapSwitch({
+    	disabled:true
+	});
+	$("[name='my-checkbox']").bootstrapSwitch(); //initialized somewhere
+	$("[name='my-checkbox']").bootstrapSwitch('disabled',true);
 	$('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-		console.log("TOGGLE");
+		alert("You must add a class before you can begin to annotate.");
 	});
 });
 
