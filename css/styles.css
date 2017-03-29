@@ -1,9 +1,9 @@
 mark {
-  background-color: blue;
+  background: blue;
 }
 
 .ui-menu .ui-menu-item a{
-    color: #black;
+    color: black;
     border-radius: 0px;
     display:block
 }
@@ -33,27 +33,6 @@ ul.ui-autocomplete {
 .ui-menu {
       position: inherit;
       background-color: white;
-}
-
-
-.loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-
-    position: absolute;
-    top: 143px;
-    left: 45%;
-    animation: spin 2s linear infinite;
-    z-index: 5;
-    visibility: hidden;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 

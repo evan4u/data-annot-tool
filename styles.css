@@ -4,7 +4,7 @@ h1 {
 }
 
 mark {
-    background-color: blue;
+    background:blue;
     color: black;
     padding: 0;
 }

@@ -226,8 +226,31 @@ $(function() {
 
 		words = [];
 		mark("");
-	
+
 	}
+
+
+
+	// SIMULATION
+	var str = 'B-Peop	Dole\nO	is\nO	at\nO	an\nO	organizational\nO	disadvantage\nO	in\nO	the\nO	South\nO	but\nO	has\nO	had\nO	his\nO	wife\nO	","\nB-Peop	Elizabeth\nO	","\nO	a\nO	native\nO	of\nB-Loc	North/Carolina\nO	","\nO	working\nO	the\nO	region\nO	for\nO	him\nO	.'
+
+	function convertAnnotToText() {
+		var classSet = new Set();
+		var lines = str.split('\n');
+		for(var i = 0;i < lines.length;i++){ // READS LINE BY LINE
+			var tokens = lines[i].split(/\t/); // SPLIT INTO TABS
+	    	console.log(tokens[1]);
+	    	classSet.add(tokens[0]);
+		}
+		
+
+		classSet.forEach(function(value) {
+  			create_a_class_button(value);
+  		});
+		// TO DO THE INVERSE, USE THIS AS REFERENCE:
+		// http://stackoverflow.com/questions/8441915/tokenizing-strings-using-regular-expression-in-javascript
+	}
+	convertAnnotToText();
 });
 
 
