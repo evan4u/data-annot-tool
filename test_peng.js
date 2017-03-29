@@ -36,7 +36,7 @@ $(function() {
 	$(".context").mouseup(function() {
 
 		if (numOfButtons > 0) {
-			var token = removeSpaces(window.getSelection().toString());
+			var token = cleanString(window.getSelection().toString());
 			//var token = window.getSelection().toString();
 			if (token != undefined) {
 				var r = confirm('Wound you like to highlight '+token);
@@ -59,7 +59,7 @@ $(function() {
 	           		range.setEnd(node,range.endOffset + 1);
 	        	} while(range.toString().indexOf(' ') == -1 && range.toString().trim() != '');
 	        	
-	        	var str = range.toString().trim();
+	        	var str = cleanString(range.toString().trim());
 
 	        	var r = confirm('Wound you like to highlights '+str);
 				if (r == true) {
@@ -76,18 +76,27 @@ $(function() {
 
 
 
-	function removeSpaces(str) {
+	function cleanString(str) {
+		/*
+		Removes punctation and spaces
+		*/
+		console.log((typeof(str) == 'string')+ "  "+ (str != ""));
 		if (typeof(str) == 'string' && str != "") {
-			if (str[0] == ' ') {
+
+			if (!isLetter(str[0])) {
 				str = str.substring(1);
 			}
-			
-			if (str[str.length - 1] == ' ') {
+						
+			if (!isLetter(str[str.length-1])) {
 				str = str.substring(0, str.length-1);
 			}
-
+			console.log(!isLetter(str[str.length-1]));
 			return str;
 		}
+	}
+
+	function isLetter(c) {
+ 		return c.toLowerCase() != c.toUpperCase();
 	}
 
 	var $input = $("input[name='keyword']");
