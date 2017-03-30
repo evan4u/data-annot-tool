@@ -26,7 +26,9 @@ $(function() {
 	    
 		$(".context").unmark({
 		    done: function() {
-		    	words.push(keyword);
+		    	if (keyword != "") {
+		    		words.push(keyword);
+		    	}
 		    	console.log(words)
 		        $(".context").mark(words, options);
 		    }
@@ -69,7 +71,7 @@ $(function() {
 				    mark(str);
 				}
 			}
-			$(".input-sm").focus();
+			$("#classname").focus();
 		}
 
 		 // removes auto-highlight caused from initial highlight
@@ -174,8 +176,6 @@ $(function() {
 		saveAs(blob, "output.txt");
 
 
-		// organise by classes
-		console.log(annotatedData[0]);
 		
 	}
 
@@ -237,10 +237,15 @@ $(function() {
 		}
 
 		words = [];
+		mark("");
 		//console.log("go here3: "+annotatedDataOrganised[classAnnot]);
 		updateAllAnnotatedData();
 		outputAnnotatedData();
-		mark("");
+		
+		$("#settings-div").focus();
+
+
+
 	}
 
 
@@ -332,7 +337,6 @@ $(function() {
 			var tmp = annotatedDataOrganised[key];
 			for (var i = 0; i < tmp.length; i++) {
 				updateAnnotedData(key, tmp[i]);
-				console.log("fk: "+key+" "+tmp[i]);
 			}
 		}
 	}
@@ -351,10 +355,25 @@ $(function() {
 
 
 	// SIMULATION
-	loadAnnotedText();
-	stringToAnnotDataDefault(html);
-	updateAllAnnotatedData();
-	outputAnnotatedData()
+
+
+	// no preprocess
+	function demo1() {
+		stringToAnnotDataDefault(html);
+		updateAllAnnotatedData();
+		outputAnnotatedData();
+	}
+
+	// with preprocess
+	function demo2() {
+		loadAnnotedText();
+		stringToAnnotDataDefault(html);
+		updateAllAnnotatedData();
+		outputAnnotatedData(); 
+	}
+
+	demo1();
+
 });
 
 
