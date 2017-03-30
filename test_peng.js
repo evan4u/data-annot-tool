@@ -7,7 +7,8 @@ $(function() {
 	$( ".context" ).html(html);
 
 	var annotatedData = [];
-	var annotatedDataOrganised = {};
+	var annotatedDataOrganised = {'O': []};
+	var annotatedDataReal = [];
 
 	var highlightUnlocked = false; // NEEDS TO FALSE
 	var numOfButtons = 0;
@@ -16,8 +17,9 @@ $(function() {
 
 	var mark = function(keyword) {
     	// Determine selected options
-	    var options = {'accuracy': "exactly"};
-	    
+	    //var options = {'accuracy': "exactly", 'exclude': [',', '.']};
+	    var options = {'accuracy': "complementary"};
+
 	    $("input[name='opt[]']").each(function() {	
 	    	options[$(this).val()] = $(this).is(":checked");
 	    }); 
@@ -35,7 +37,7 @@ $(function() {
 
 	$(".context").mouseup(function() {
 
-		if (numOfButtons > 0) {
+		if (highlightUnlocked) {
 			var token = cleanString(window.getSelection().toString());
 			//var token = window.getSelection().toString();
 			if (token != undefined) {
@@ -212,7 +214,8 @@ $(function() {
 			$("#buttonArea").append('<button class="classButtons" style="width:100%; background-color:#eb7804; color:white; margin: 5px; border-radius: 4px; outline:none;">'+className+'</button>');
 			$('.classButtons').click(function() {
 				addTokensToClass(className);
-		  		addToEntResult();
+		  		//addToEntResult();
+		  		console.log("here");
 			});
 			numOfButtons++;
 			$("[name='my-checkbox']").bootstrapSwitch('disabled',false);
@@ -226,28 +229,37 @@ $(function() {
 		annotatedData.push({classAnnot: words});
 
 		if (classAnnot in annotatedDataOrganised) {
-			annotatedDataOrganised[classAnnot] = annotatedDataOrganised[classAnnot] + words;
-			console.log(annotatedDataOrganised);
+			annotatedDataOrganised[classAnnot] = annotatedDataOrganised[classAnnot].concat(words);
+			
 		} else {
 			annotatedDataOrganised[classAnnot] = words;
+			console.log("go here2");
 		}
 
 		words = [];
+		//console.log("go here3: "+annotatedDataOrganised[classAnnot]);
+		updateAllAnnotatedData();
+		outputAnnotatedData();
 		mark("");
 	}
 
 
 
 	// SIMULATION
-	var str = 'B-Peop	Dole\nO	is\nO	at\nO	an\nO	organizational\nO	disadvantage\nO	in\nO	the\nO	South\nO	but\nO	has\nO	had\nO	his\nO	wife\nO	","\nB-Peop	Elizabeth\nO	","\nO	a\nO	native\nO	of\nB-Loc	North/Carolina\nO	","\nO	working\nO	the\nO	region\nO	for\nO	him\nO	.'
+	var str = 'B-Peop	Dole\nO	is\nO	at\nO	an\nO	organizational\nO	disadvantage\nO	in\nO	the\nO	South\nO	but\nO	has\nO	had\nO	his\nO	wife\nO	","\nB-Peop	Evan\nO	","\nO	a\nO	native\nO	of\nB-Loc	Macquarie University\nO	","\nO	working\nO	the\nO	region\nO	for\nO	him\nO	.'
 
-	function convertAnnotToText() {
+	function loadAnnotedText() {
 		var classSet = new Set();
 		var lines = str.split('\n');
 		for(var i = 0;i < lines.length;i++){ // READS LINE BY LINE
 			var tokens = lines[i].split(/\t/); // SPLIT INTO TABS
-	    	console.log(tokens[1]);
 	    	classSet.add(tokens[0]);
+	    	if (!annotatedDataOrganised.hasOwnProperty(tokens[0])) {
+	    		annotatedDataOrganised[tokens[0]] = [];
+	    		annotatedDataOrganised[tokens[0]].push(tokens[1]);
+	    	} else {
+	    		annotatedDataOrganised[tokens[0]].push(tokens[1]);
+	    	}
 		}
 		
 
@@ -257,9 +269,74 @@ $(function() {
 		// TO DO THE INVERSE, USE THIS AS REFERENCE:
 		// http://stackoverflow.com/questions/8441915/tokenizing-strings-using-regular-expression-in-javascript
 	}
-	//convertAnnotToText();
+	//loadAnnotedText();
 
 
+	function stringToToken(str) {
+		var regex = /[^\s\.,:!?]+/g; // This is "multiple not space characters, which should be searched not once in string"
+		var tokens = str.replace(/[^\w\s]|_/g, function ($1) { return ' ' + $1 + ' ';}).replace(/[ ]+/g, ' ').split(' ');
+		return tokens.splice(1,tokens.length-1);
+	}
+
+
+	function stringToAnnotDataDefault(str) {
+		/*  Default refers to putting making everything as object
+		*/
+		var token = stringToToken(str);
+		for (var i = 0; i < token.length; i++) {
+								// class | data
+			annotatedDataReal.push(['O', token[i]]);
+		}
+	}
+
+
+	function outputAnnotatedData() {
+		var str = "";
+		for (var i = 0; i < annotatedDataReal.length; i++) {
+			str += annotatedDataReal[i][0]+"\t"+annotatedDataReal[i][1]+'\n';
+		}
+		$('#entity-result').html(str);
+	}
+
+	
+
+	function updateAnnotedData(key, str) {
+		/*
+			UPDATES THE KEY OF A HIGHLIGHTING STRING IN OUR ANNOTATION
+		*/
+		arrStr = str.split(" ");
+		var tmpArr = [];
+		for (var i = 0; i < annotatedDataReal.length; i++) {
+			var count = 0;
+			if (arrStr[0] == annotatedDataReal[i][1]) {
+				var tmpStr = ""
+				// CHECKS FOR MULTIPLE WORD TOKENS
+				for (var j = i; j < annotatedDataReal.length && count < arrStr.length; j++) {
+					if(annotatedDataReal[j][1] != arrStr[count]) {
+						break;
+					} 
+					count++;	
+				}
+				// IF MULTIPLE WORDS FOUND
+				annotatedDataReal[i] = [key, str]; // PUTS INTO ONE ELEMENT
+				annotatedDataReal.splice(i+1, arrStr.length-1); // REMOVES REMAINING
+			}
+		}
+		
+	}
+
+
+	function updateAllAnnotatedData() {
+		for (var key in annotatedDataOrganised) {
+		if (key != "O") {
+			var tmp = annotatedDataOrganised[key];
+			for (var i = 0; i < tmp.length; i++) {
+				updateAnnotedData(key, tmp[i]);
+				console.log("fk: "+key+" "+tmp[i]);
+			}
+		}
+	}
+	}
 
 	// switch
 	/// for asp toggle (dev mode)
@@ -269,8 +346,15 @@ $(function() {
 	$("[name='my-checkbox']").bootstrapSwitch(); //initialized somewhere
 	$("[name='my-checkbox']").bootstrapSwitch('disabled',true);
 	$('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-		alert("You must add a class before you can begin to annotate.");
+		highlightUnlocked = !highlightUnlocked;
 	});
+
+
+	// SIMULATION
+	loadAnnotedText();
+	stringToAnnotDataDefault(html);
+	updateAllAnnotatedData();
+	outputAnnotatedData()
 });
 
 
