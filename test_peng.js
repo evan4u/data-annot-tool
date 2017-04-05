@@ -31,7 +31,6 @@ $(function() {
 		    	if (keyword != "") {
 		    		words.push(keyword);
 		    	}
-		    	console.log(words)
 		        $(".context").mark(words, options);
 		    }
 		});
