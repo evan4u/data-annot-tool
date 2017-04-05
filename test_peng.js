@@ -14,6 +14,8 @@ $(function() {
 	var numOfButtons = 0;
 	var words = [];
 
+	var colours = {'O': [255, 255, 255]}
+
 
 	var mark = function(keyword) {
     	// Determine selected options
@@ -37,7 +39,7 @@ $(function() {
   	};
 
 
-	$(".context").mouseup(function() {
+	$(".context").mouseup(function(event) {
 
 		if (highlightUnlocked) {
 			var token = cleanString(window.getSelection().toString());
@@ -49,7 +51,8 @@ $(function() {
 				} 
 			}
 			else {
-				s = window.getSelection();
+				
+				s = window.getSelection(window.getSelection().toString());
 	         	var range = s.getRangeAt(0);
 	         	var node = s.anchorNode;
 
@@ -70,6 +73,7 @@ $(function() {
 				    //words.push(str);
 				    mark(str);
 				}
+				
 			}
 			$("#classname").focus();
 		}
@@ -187,7 +191,8 @@ $(function() {
 	      $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
 	});
 
-	
+
+
 	
 
 	function addToEntResult() {
@@ -211,10 +216,17 @@ $(function() {
 
 	function create_a_class_button(className) {
 		if (className != null) {
-			$("#buttonArea").append('<button class="classButtons" style="width:100%; background-color:#eb7804; color:white; margin: 5px; border-radius: 4px; outline:none;">'+className+'</button>');
+			// random color
+			var r = Math.floor(Math.random() * (256));
+			var g = Math.floor(Math.random() * (256));
+			var b = Math.floor(Math.random() * (256));	
+			colours[className] = className != 'O' ? [r,g,b] : [255,255,255];
+			var colour = "rgb("+r+","+g+","+b+")";	
+			var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
+			$("#buttonArea").append('<button class="classButtons" style="width:100%; background-color:'+colour+'; color:'+fontColour+'; margin: 5px; border-radius: 4px; outline:none;">'+className+'</button>');
 			$('.classButtons').click(function() {
 				addTokensToClass(className);
-		  		//addToEntResult();
+		  		updateText();
 		  		console.log("here");
 			});
 			numOfButtons++;
@@ -223,6 +235,33 @@ $(function() {
 		}
 	}
 
+	function updateText() {
+
+		var str = ""
+		for (var i = 0; i < annotatedDataReal.length; i++) {
+			r = colours[annotatedDataReal[i][0]][0];
+			g = colours[annotatedDataReal[i][0]][1];
+			b = colours[annotatedDataReal[i][0]][2];
+			var colour = "rgb("+r+","+g+","+b+")";	
+			var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
+
+
+			str += "<span id='someToken' style='color:" + fontColour+ "; background-color: "+colour + "'>"+annotatedDataReal[i][1]+"</span> ";
+		}
+		$( ".context" ).html(str);
+	}
+
+
+
+	function isColorDark(r, g, b){
+    	var darkness = 1-(0.299*r + 0.587*g + 0.114*b)/255;
+    	if(darkness < 0.5){
+        	return false; // It's a light color
+    	}
+    	else {
+        	return true; // It's a dark color
+    	}
+	}
 
 
 	function addTokensToClass(classAnnot) {
@@ -271,9 +310,11 @@ $(function() {
 		classSet.forEach(function(value) {
   			create_a_class_button(value);
   		});
-		// TO DO THE INVERSE, USE THIS AS REFERENCE:
-		// http://stackoverflow.com/questions/8441915/tokenizing-strings-using-regular-expression-in-javascript
+
+		
+
 	}
+
 	//loadAnnotedText();
 
 
@@ -331,6 +372,9 @@ $(function() {
 	}
 
 
+
+
+
 	function updateAllAnnotatedData() {
 		for (var key in annotatedDataOrganised) {
 		if (key != "O") {
@@ -370,9 +414,10 @@ $(function() {
 		stringToAnnotDataDefault(html);
 		updateAllAnnotatedData();
 		outputAnnotatedData(); 
+		updateText();
 	}
 
-	demo1();
+	demo2();
 
 });
 
