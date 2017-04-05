@@ -50,31 +50,7 @@ $(function() {
 				    mark(token);
 				} 
 			}
-			else {
-				
-				s = window.getSelection(window.getSelection().toString());
-	         	var range = s.getRangeAt(0);
-	         	var node = s.anchorNode;
-
-	         	while(range.toString().indexOf(' ') != 0 && range.startOffset > 0) {   
-
-	            	range.setStart(node,(range.startOffset -1));
-	         	}
-
-	         	range.setStart(node, range.startOffset + 1);
-	         	do {
-	           		range.setEnd(node,range.endOffset + 1);
-	        	} while(range.toString().indexOf(' ') == -1 && range.toString().trim() != '');
-	        	
-	        	var str = cleanString(range.toString().trim());
-
-	        	var r = confirm('Wound you like to highlights '+str);
-				if (r == true) {
-				    //words.push(str);
-				    mark(str);
-				}
-				
-			}
+			
 			$("#classname").focus();
 		}
 
@@ -212,14 +188,15 @@ $(function() {
 		$('#entity-result').html(outputStr)
 	}
 
+
 	
 
 	function create_a_class_button(className) {
 		if (className != null) {
 			// random color
-			var r = Math.floor(Math.random() * (256));
-			var g = Math.floor(Math.random() * (256));
-			var b = Math.floor(Math.random() * (256));	
+			var r = className != 'O' ? Math.floor(Math.random() * (256)) : 255;
+			var g = className != 'O' ? Math.floor(Math.random() * (256)) : 255;
+			var b = className != 'O' ? Math.floor(Math.random() * (256)) : 255;
 			colours[className] = className != 'O' ? [r,g,b] : [255,255,255];
 			var colour = "rgb("+r+","+g+","+b+")";	
 			var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
@@ -245,21 +222,28 @@ $(function() {
 			var colour = "rgb("+r+","+g+","+b+")";	
 			var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
 
-
-			str += "<span id='someToken' style='color:" + fontColour+ "; background-color: "+colour + "'>"+annotatedDataReal[i][1]+"</span> ";
+			str += "<span class='someToken' style='color:" + fontColour+ "; background-color: "+colour + "'>"+annotatedDataReal[i][1]+"</span> ";
 		}
-		$( ".context" ).html(str);
+		$(".context").html(str);
 	}
 
-
+	$(document).on('dblclick','.someToken',function(){
+		if (typeof window.getSelection != "undefined" && highlightUnlocked) {
+   			mark($(this).html());
+   		}
+   		else {
+   			$("#classname").focus();
+   		}
+	});    	
+	
 
 	function isColorDark(r, g, b){
     	var darkness = 1-(0.299*r + 0.587*g + 0.114*b)/255;
-    	if(darkness < 0.5){
-        	return false; // It's a light color
+    	if(darkness < 0.5) {
+        	return false;
     	}
     	else {
-        	return true; // It's a dark color
+        	return true; 
     	}
 	}
 
