@@ -10,7 +10,7 @@ $(function() {
 	var annotatedDataOrganised = {'O': []};
 	var annotatedDataReal = [];
 
-	var highlightUnlocked = false; // NEEDS TO FALSE
+	var editMode = false; // NEEDS TO FALSE
 	var numOfButtons = 0;
 	var words = [];
 
@@ -39,8 +39,8 @@ $(function() {
 
 
 	$(".context").mouseup(function(event) {
-
-		if (highlightUnlocked) {
+		
+		if (Object.size(colours) > 1 && editMode) {
 			var token = cleanString(window.getSelection().toString());
 			//var token = window.getSelection().toString();
 			if (token != undefined) {
@@ -199,13 +199,19 @@ $(function() {
 			colours[className] = className != 'O' ? [r,g,b] : [255,255,255];
 			var colour = "rgb("+r+","+g+","+b+")";	
 			var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
-			$("#buttonArea").append('<button class="classButtons" style="width:100%; background-color:'+colour+'; color:'+fontColour+'; margin: 5px; border-radius: 4px; outline:none;">'+className+'</button>');
+			var altClassName = className.replace(/\s/g, '');
+			$("#buttonArea").append('<button class="classButtons '+altClassName+'" style="width:100%; background-color:'+colour+'; color:'+fontColour+'; margin: 5px; border-radius: 4px; outline:none;">'+className+'</button>');
 			$('.classButtons').click(function() {
-				addTokensToClass(className);
-		  		updateText();
-		  		console.log("here");
+				console.log("fdfd: "+editMode);
+				if (!editMode) {
+					addTokensToClass(className);
+			  		updateText();
+		  		}
+		  		else {
+		  			deleteButton(this);
+		  		}
+		  		
 			});
-			numOfButtons++;
 			$("[name='my-checkbox']").bootstrapSwitch('disabled',false);
 			$("#classname").val('');
 		}
@@ -227,7 +233,7 @@ $(function() {
 	}
 
 	$(document).on('dblclick','.someToken',function(){
-		if (typeof window.getSelection != "undefined" && highlightUnlocked) {
+		if (typeof window.getSelection != "undefined" && Object.size(colours) > 1) {
    			mark($(this).html());
    		}
    		else {
@@ -370,15 +376,63 @@ $(function() {
 	}
 
 	// switch
-	/// for asp toggle (dev mode)
 	$("[name='my-checkbox']").bootstrapSwitch({
     	disabled:true
 	});
 	$("[name='my-checkbox']").bootstrapSwitch(); //initialized somewhere
 	$("[name='my-checkbox']").bootstrapSwitch('disabled',true);
 	$('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-		highlightUnlocked = !highlightUnlocked;
+		if (state) {
+			createDeleteButtons();
+		} 
+		else {
+			returnButtonsBackToNormal();
+		}
+		editMode = state;
 	});
+
+
+	function createDeleteButtons() {
+		$(".classButtons").css('background-color', 'red');
+		$(".classButtons").css('color', 'white');
+	}
+
+
+	function deleteButton(obj) {
+		// NEED TO DO A CONFIRMATION DELETE
+		$(obj).remove();
+	}
+
+	function returnButtonsBackToNormal() {
+		var htmlReg = new RegExp(/&<button.*button>&/); 
+		htmlArr = $("#buttonArea").html().split("</button>");
+		for (var i = 0; i < htmlArr.length; i++) {
+			for (key in colours) {
+				if (htmlArr[i].includes(key)) {
+					var altClassName = "."+key.replace(/\s/g, '');
+					var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
+					$(altClassName).css('color', fontColour);
+					$(altClassName).css('background-color', makeRGBString(key));
+				}
+			}
+		}
+		//$("#buttonArea").html(htmlArr.join(""));
+	}
+
+	function makeRGBString(className) {
+		var r = colours[className][0];
+		var g = colours[className][1];
+		var b = colours[className][2];
+		return "rgb("+r+","+g+","+b+")";	
+	}
+
+	Object.size = function(obj) {
+	    var size = 0, key;
+	    for (key in obj) {
+	        if (obj.hasOwnProperty(key)) size++;
+	    }
+	    return size;
+	};
 
 
 	// SIMULATION
