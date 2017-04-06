@@ -29,7 +29,15 @@ $(function() {
 		$(".context").unmark({
 		    done: function() {
 		    	if (keyword != "") {
-		    		words.push(keyword);
+		    		index = words.indexOf(keyword);
+		    		if (index < 0) {
+		    			words.push(keyword);
+		    			console.log("good")
+		    		}
+		    		else {
+		    			console.log("bad");
+		    			words.splice(keyword, 1)
+		    		}
 		    	}
 		        $(".context").mark(words, options);
 		    }
@@ -39,15 +47,11 @@ $(function() {
 
 
 	$(".context").mouseup(function(event) {
-		
-		if (Object.size(colours) > 1 && editMode) {
+		if (Object.size(colours) > 1 && !editMode) {
 			var token = cleanString(window.getSelection().toString());
 			//var token = window.getSelection().toString();
 			if (token != undefined) {
-				var r = confirm('Wound you like to highlight '+token);
-				if (r == true) {
-				    mark(token);
-				} 
+				mark(token); 
 			}
 			
 			$("#classname").focus();
@@ -63,8 +67,7 @@ $(function() {
 		/*
 		Removes punctation and spaces
 		*/
-		console.log((typeof(str) == 'string')+ "  "+ (str != ""));
-		if (typeof(str) == 'string' && str != "") {
+		if (typeof(str) == 'string' && str != "" && str != " ") {
 
 			if (!isLetter(str[0])) {
 				str = str.substring(1);
@@ -232,14 +235,7 @@ $(function() {
 		$(".context").html(str);
 	}
 
-	$(document).on('dblclick','.someToken',function(){
-		if (typeof window.getSelection != "undefined" && Object.size(colours) > 1) {
-   			mark($(this).html());
-   		}
-   		else {
-   			$("#classname").focus();
-   		}
-	});    	
+
 	
 
 	function isColorDark(r, g, b){
