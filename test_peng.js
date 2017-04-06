@@ -15,6 +15,7 @@ $(function() {
 	var words = [];
 
 	var colours = {'O': [255, 255, 255]}
+	var tempWords = [];
 
 
 	var mark = function(keyword) {
@@ -29,17 +30,18 @@ $(function() {
 		$(".context").unmark({
 		    done: function() {
 		    	if (keyword != "") {
+		    		var str = "";
 		    		index = words.indexOf(keyword);
 		    		if (index < 0) {
 		    			words.push(keyword);
-		    			console.log("good")
+		    			str = words.join(" ");
 		    		}
 		    		else {
-		    			console.log("bad");
 		    			words.splice(keyword, 1)
 		    		}
 		    	}
-		        $(".context").mark(words, options);
+		    	var tmpArr = str.split(" ");
+		    	$(".context").mark(tmpArr, options);
 		    }
 		});
 		
@@ -76,7 +78,6 @@ $(function() {
 			if (!isLetter(str[str.length-1])) {
 				str = str.substring(0, str.length-1);
 			}
-			console.log(!isLetter(str[str.length-1]));
 			return str;
 		}
 	}
@@ -92,7 +93,6 @@ $(function() {
 
   	$("#classname").keyup(function(event){  		
 	    if(event.keyCode == 13){
-	    	console.log($(this).val());
 	        if (validClassInput($(this).val())) {
 	        	create_a_class_button($(this).val());
 	        }
@@ -117,50 +117,6 @@ $(function() {
 		return count != str.length;
 	}
 
-	$("#finishButton").click(function() {
-		if (numOfButtons > 0) {
-			highlightUnlocked = !highlightUnlocked;
-			if (highlightUnlocked) {
-				$("#finishButton").text("Add class");
-			} else {
-				$("#finishButton").text("Start Annotating");
-			}
-		} else {
-			alert("You Have not added a class. Please add a class");
-		}
-	});
-
-
-	$("#downloadButton").click(function() {
-
-		writeFile();
-		//window.open("output.txt", "_blank");
-	});
-
-	function writeFile() {
-		formatAnnotatedData();
-	}
-
-	function formatAnnotatedData() {
-		// put into a single dict
-		outputStr = "";
-		for (var key in annotatedDataOrganised) {
-			outputStr += key+":\n";
-  			if (annotatedDataOrganised.hasOwnProperty(key)) {
-  				outputStr += annotatedDataOrganised[key]+"\n"
-    			
-  			}
-
-  			outputStr += "\n\n\n";
-		}
-
-		var blob = new Blob([outputStr], {type: "text/plain;charset=utf-8"});
-		saveAs(blob, "output.txt");
-
-
-		
-	}
-
 
 	// NEED FOR TABS
 	$('.collapse').on('shown.bs.collapse', function(){
@@ -168,28 +124,6 @@ $(function() {
 	}).on('hidden.bs.collapse', function(){
 	      $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
 	});
-
-
-
-	
-
-	function addToEntResult() {
-		// put into a single dict
-		outputStr = "";
-		for (var key in annotatedDataOrganised) {
-			outputStr += key+":\n";
-  			if (annotatedDataOrganised.hasOwnProperty(key)) {
-  				outputStr += annotatedDataOrganised[key]+"\n"
-    			
-  			}
-
-  			outputStr += "\n\n\n";
-  			console.log(outputStr);
-		}
-
-		$('#entity-result').html(outputStr)
-	}
-
 
 	
 
@@ -204,14 +138,13 @@ $(function() {
 			var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
 			var altClassName = className.replace(/\s/g, '');
 			$("#buttonArea").append('<button class="classButtons '+altClassName+'" style="width:100%; background-color:'+colour+'; color:'+fontColour+'; margin: 5px; border-radius: 4px; outline:none;">'+className+'</button>');
-			$('.classButtons').click(function() {
-				console.log("fdfd: "+editMode);
+			$('.classButtons.'+altClassName).click(function() {
 				if (!editMode) {
 					addTokensToClass(className);
 			  		updateText();
 		  		}
 		  		else {
-		  			deleteButton(this);
+		  			deleteButton(this, className);
 		  		}
 		  		
 			});
@@ -221,8 +154,7 @@ $(function() {
 	}
 
 	function updateText() {
-
-		var str = ""
+		var str = "";
 		for (var i = 0; i < annotatedDataReal.length; i++) {
 			r = colours[annotatedDataReal[i][0]][0];
 			g = colours[annotatedDataReal[i][0]][1];
@@ -235,8 +167,6 @@ $(function() {
 		$(".context").html(str);
 	}
 
-
-	
 
 	function isColorDark(r, g, b){
     	var darkness = 1-(0.299*r + 0.587*g + 0.114*b)/255;
@@ -394,10 +324,21 @@ $(function() {
 	}
 
 
-	function deleteButton(obj) {
+	function deleteButton(obj, className) {
 		// NEED TO DO A CONFIRMATION DELETE
-		$(obj).remove();
+		var tmp = {};
+		if (confirm("Are you sure you want to delete "+className)) {
+			for (var i = 0; i  < annotatedDataReal.length; i++) {
+				if (annotatedDataReal[i][0] == className) {
+					annotatedDataReal[i][0] = "O";
+				}
+			}
+			delete colours[className];
+			updateText();
+			$(obj).remove();
+		}
 	}
+	
 
 	function returnButtonsBackToNormal() {
 		var htmlReg = new RegExp(/&<button.*button>&/); 
