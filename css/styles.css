@@ -280,6 +280,32 @@ h1 {
 .show {display:block;}
 
 
+
+  
+.fileupload {
+    width: 100px;
+   
+    position: relative;
+    overflow: hidden;
+    background: ...; /* and other things to make it pretty */
+}
+
+.fileupload input {
+    position: absolute;
+    top: 0;
+    right: 0; /* not left, because only the right part of the input seems to
+                 be clickable in some browser I can't remember */
+    cursor: pointer;
+    opacity: 0.0;
+    filter: alpha(opacity=0); /* and all the other old opacity stuff you
+                                 want to support */
+    font-size: 300px; /* wtf, but apparently the most reliable way to make
+                         a large part of the input clickable in most browsers */
+    
+}
+
+
+
 a {
     text-decoration: none !important;
 }

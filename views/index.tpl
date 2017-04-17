@@ -8,11 +8,12 @@ Author: Evan Bernardez, Macquarie University
       <title>Annotation Tool</title>
 
       <!-- CSS -->
-      <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css">
-      <link src="../css/jquery-ui.css" type="text/css">
-      <link rel="stylesheet" type="text/css" href="../css/bootstrap-switch.min.css">
-      <link rel="stylesheet" href="../css/styles.css">
-      <link rel="stylesheet" href="../css/bootstrap.css">
+      <link href="/css/jquery-ui.css" type="text/css">
+      <link href="/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css">
+      <link href="/css/styles.css" rel="stylesheet" type="text/css">
+      <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+      
 </head>
 <body style="background-color: #c0c0c0;">
 
@@ -41,14 +42,14 @@ Author: Evan Bernardez, Macquarie University
                                           <li><a href="javascript:void(0);" onclick="saveButton()">Save</a></li>
                                           <li class="divider"></li>
                                           <!-- LOAD SUBMENU -->
-                                          <li class="dropdown dropdown-submenu">
-                                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-bind="event:{click: loadFileNames}" style=" padding-right:90px;" >Load</a>
-                                                <ul class="dropdown-menu" data-bind="foreach: fileNames">
-                                                      <li>
-                                                            <a href="javascript:void(0);" onclick="return false" data-bind="text:$data, click: $parent.loadFile"> </a>
-                                                      </li>
-                                                      <li class="divider"></li>
-                                                </ul>
+                                          <li>
+                                                <a href="javascript:void(0);" id="upload">
+
+                                                <form class="fileupload" action="/upload" method="post" enctype="multipart/form-data">
+                                                <input hidden type="file" name="upload"/ id="uploadinput">Upload
+                                                </form>
+
+                                                </a>
                                           </li>
                                     </ul>
                               </li>
@@ -60,16 +61,6 @@ Author: Evan Bernardez, Macquarie University
                                           <li class="divider"></li>
                                           <li> <a href="javascript:void(0);" data-bind="click: changeToSpeechMode">Relation</a> </li>
                                     </ul>
-                              </li>
-                              <!-- Class Selection -->
-                              <li class="dropdown" >
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Class Selection <b class="caret"></b></a>
-                                    <ul class="dropdown-menu" id="classList" >
-                                          <li class="divider"></li>
-                                          <li class="divider"></li>
-                                          <li id="edit"> <a>Edit</a> </li>
-                                    </ul>
-
                               </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
@@ -95,13 +86,13 @@ Author: Evan Bernardez, Macquarie University
                                     <div class="panel-body">
                                           <div class="panel panel-default">
                                                 <div class="panel-body context" style="height:320px; overflow-y: scroll;">
-                                                CONTENT GOES HERE
+                                                {{!content}}
                                                  </div>
                                           </div>
                                     </div>
                               </div>
                                <div style="padding-left: 25px;" class="panel-heading">
-                                    <h4 class="panel-title">&nbsp;</h4>
+                                    <h4 class="panel-title">File: <span style="font-weight:normal;">{{filename}} <span></h4>
                               </div>
                         </div>
 
@@ -117,6 +108,7 @@ Author: Evan Bernardez, Macquarie University
                                                        <div id="buttonArea" class="form-group" style="padding:10px;">
                                                             <label for="classname">Add Class:</label>
                                                             <input type="text" class="form-control" id="classname" style="margin-bottom:10px;">
+                                                             {{!buttons}}
                                                       </div>
                                                  </div>
                                           </div>
@@ -127,6 +119,7 @@ Author: Evan Bernardez, Macquarie University
                                     <h4 class="panel-title">
                                     Delete Classes:
                                           <input id="toggle-annot" type="checkbox" name="my-checkbox" data-size="mini" >
+
                                     </h4>
 
                                    
@@ -143,13 +136,13 @@ Author: Evan Bernardez, Macquarie University
                                           <h4 class="panel-title">
                                                 <a href="javascript:void(0);" class="accordion-toggle" data-toggle="collapse"  data-target="#collapseThree">
                                                       <span class="glyphicon glyphicon-plus"></span>
-                                                      Result
+                                                      Results
                                                 </a>
                                           </h4>
                                     </div>
                                     <div id="collapseThree" class="panel-collapse collapse">
                                           <div class="panel-body">
-                                                <pre style="max-height:640px; overflow-y: scroll;" id="entity-result"></pre>
+                                                <pre style="max-height:640px; overflow-y: scroll;" id="result">{{result}}</pre>
                                           </div>
                                     </div>
                               </div>
@@ -159,22 +152,30 @@ Author: Evan Bernardez, Macquarie University
       </div>
 
            
+
+
+
       <form hidden id="myForm">
           <label for="search">Save as...</label>
           <input< type="text" id="textSave" name="q">
       </form>
       
       <!-- Bootstrap --><!-- Required to use AJAX and JQuery -->
-      <script src="../js_library/jquery-latest.min.js" type="text/javascript"></script>
-      <script src="../js_library/jquery-ui.js" type="text/javascript"></script>
-      <script src="../js_library/bootstrap.min.js" type="text/javascript"></script>
-      <script src="../js_library/bootstrap-switch.min.js" type="text/javascript"></script>
-      <script src="../js_library/jquery.mark.min.js" type="text/javascript"></script>
+      <script src="/js_library/jquery-latest.min.js" type="text/javascript"></script>
+      <script src="/js_library/jquery-ui.js" type="text/javascript"></script>
+      <script src="/js_library/bootstrap.min.js" type="text/javascript"></script>
+      <script src="/js_library/bootstrap-switch.min.js" type="text/javascript"></script>
+      <script src="/js_library/jquery.mark.min.js" type="text/javascript"></script>
 
-      <script src="../js_controller/global_variables.js"></script>
-      <script src="../js_controller/class_button.js"></script>
-      <script src="../js_controller/highlight.js"></script>
-      <script src="../js_controller/main.js"></script>
+      <script src="/js_controller/global_variables.js"></script>
+      <script src="/js_controller/class_button.js"></script>
+      <script src="/js_controller/highlight.js"></script>
+      <script src="/js_controller/upload.js"></script>
+      <script src="/js_controller/main.js"></script>
       <style>mark{background:#eb7804; color:white;}#toggle-annot {background-color:red;}</style>
+
+      <script>
+
+      </script>
 </body>
 </html>

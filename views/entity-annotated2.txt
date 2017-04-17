@@ -1,0 +1,1 @@
+B-Peop\tDole\nO\tis\nO\tat\nO\tan\nO\torganizational\nO\tdisadvantage\nO\tin\nO\tthe\nO\tSouth\nO\tbut\nO\thas\O\thad\nO\this\nO\twife\nO\t","\nB-Peop\tElizabeth\nO\t","\nO\ta\nO\tnative\nO\tof\nB-Loc\tNorth/Carolina\nO\t","\nO\tworking\nO\tthe\nO\tregion\nO\tfor\nO\thim\nO\t.\n

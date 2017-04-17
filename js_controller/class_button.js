@@ -1,6 +1,7 @@
 /* Helper function used to create class buttons */
 function create_a_class_button(className, random=true) {
 	if (className != null) {
+		/*
 		var r,g,b;
 		if (random) {
 			r = className != 'O' ? Math.floor(Math.random() * (256)) : 255;
@@ -16,21 +17,17 @@ function create_a_class_button(className, random=true) {
 		var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
 		var altClassName = className.replace(/\s/g, '');
 		$("#buttonArea").append('<button class="classButtons '+altClassName+'" style="width:100%; background-color:'+colour+'; color:'+fontColour+'; margin: 5px; border-radius: 4px; outline:none;">'+className+'</button>');
-		$('.classButtons.'+altClassName).click(function() {
-			if (!editMode) {
-				addTokensToClass(className);
-		  		updateText();
-	  		}
-	  		else {
-	  			deleteButton(this, className);
-	  			updateText();
-	  			outputAnnotatedData();
-	  		}
-	  		
-		});
+		var fontColour = isColorDark(r,g,b) ? [255,255,255] : [0,0,0];
+		*/
+
+		send_button_data({'className': className,'bcolour': [0,0,0], 'fcolour': [1,1,1]});
+
 		$("[name='my-checkbox']").bootstrapSwitch('disabled',false);
 		$buttonClassInput.val('');
 	}
+
+
+
 }
 
 /* maps word to a class, called when class button click */
@@ -41,11 +38,60 @@ function addTokensToClass(classAnnot) {
 	} else {
 		annotatedDataOrganised[classAnnot] = words;
 	}
-	words = [];
-	updateAllAnnotatedData();
-	outputAnnotatedData();
+	
 	$("#settings-div").focus();
+	send_new_annot({'name': classAnnot, 'words': words})
+	words = [];
 }
+
+
+function send_button_data(data) {
+	$.ajax({
+		url: '/default_annotation',
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		success: function(json) {
+			$("#buttonArea").append(json);
+		},
+		error: function() {
+			alert("SOMETHING IS NOT RIGHT");
+		}
+	});
+}
+
+
+function send_new_annot(data) {
+	$.ajax({
+		url: '/update_annotation',
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		success: function(json) {
+			$(".context").html(json);
+		},
+		error: function() {
+			alert("SOMETHING IS NOT RIGHT");
+		}
+	});
+}
+
+function send_button_delete(data) {
+	$.ajax({
+		url: '/button_delete',
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		success: function(json) {
+			//console.log(json)
+			$(".context").html(json);
+		},
+		error: function() {
+			alert("SOMETHING IS NOT RIGHT");
+		}
+	});
+}
+
 
 /* UPDATES THE KEY OF A HIGHLIGHTING STRING IN OUR ANNOTATION */
 function updateAnnotedData(key, str) {
@@ -83,6 +129,7 @@ function updateAllAnnotatedData() {
 
 /* Deletes a button */
 function deleteButton(obj, className) {
+	send_button_delete({'name': className})
 	var tmp = {};
 	if (confirm("Are you sure you want to delete "+className)) {
 		for (var i = 0; i  < annotatedDataReal.length; i++) {
@@ -91,15 +138,31 @@ function deleteButton(obj, className) {
 			}
 		}
 		delete colours[className];
-		
-		
 		$(obj).remove();
 	}
 }
 
 
-	/* helper function that checks if the colour made by (r,g,b) is a dark colour */
+/* helper function that checks if the colour made by (r,g,b) is a dark colour */
 function isColorDark(r, g, b){
 	var darkness = 1-(0.299*r + 0.587*g + 0.114*b)/255;
 	return (darkness < 0.5) ? false : true;
+}
+
+
+function classButtonHandler(obj) {
+	if (!editMode) {
+		if (words.length > 0) {
+			addTokensToClass($(obj).html());
+			updateText();
+		}
+	}
+	else {
+		if ($(obj).html() != "O") {deleteButton(obj, $(obj).html());}
+		else {alert('Deleting default class "O" is not allowed')}
+	}
+
+	if ($('.collapse').parent().find(".glyphicon-minus").length == 1) {
+		$("#collapseThree").collapse('hide');
+	}
 }

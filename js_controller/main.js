@@ -1,10 +1,10 @@
 
 $(function() {
-$contextArea.html(html);
+//$contextArea.html(html);
 
 /** Highlights clicked or highlighted word */
 $contextArea.mouseup(function(event) {
-	if (Object.size(colours) > 1 && !editMode) {
+	if (!editMode) {
 		var token = cleanString(window.getSelection().toString());
 		if (token != undefined) {
 			mark(words, $contextArea, token); 
@@ -43,9 +43,8 @@ function validClassInput(str) {
 }
 
 // SIMULATION
-var str = 'B-Peop	Dole\nO	is\nO	at\nO	an\nO	organizational\nO	disadvantage\nO	in\nO	the\nO	South\nO	but\nO	has\nO	had\nO	his\nO	wife\nO	","\nB-Peop	Evan\nO	","\nO	a\nO	native\nO	of\nB-Loc	Macquarie University\nO	","\nO	working\nO	the\nO	region\nO	for\nO	him\nO	.'
 
-function loadAnnotedText() {
+function loadAnnotedText(str) {
 	var classSet = new Set();
 	var lines = str.split('\n');
 	for(var i = 0;i < lines.length;i++){ // READS LINE BY LINE
@@ -60,8 +59,8 @@ function loadAnnotedText() {
 	}
 	
 	classSet.forEach(function(value) {
-			create_a_class_button(value);
-		});
+		create_a_class_button(value);
+	});
 }
 
 
@@ -92,25 +91,41 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 });
 
 
+$("#uploadinput").change(function() {
+	this.form.submit();
+	console.log("goes here");
 
-// SIMULATIONS
-// no preprocess
-function demo1() {
-	stringToAnnotDataDefault(html);
-	updateAllAnnotatedData();
-	outputAnnotatedData();
+	//demon2();
+
+	//loadAnnotedText($result.html());
+});
+
+
+
+$('.collapse').on('shown.bs.collapse', function() {
+	get_annotated_results();
+	$(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function() {
+	$(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+
+
+function get_annotated_results() {
+	console.log("results...");
+	$.ajax({
+		url: '/annotated_results',
+		type: 'GET',
+		contentType: 'application/json',
+		success: function(annot_results) {
+			$result.html(annot_results);
+		},
+		error: function() {
+			alert("SOMETHING IS NOT RIGHT");
+		}
+	});
 }
 
-// with preprocess
-function demo2() {
-	loadAnnotedText();
-	stringToAnnotDataDefault(html);
-	updateAllAnnotatedData();
-	outputAnnotatedData(); 
-	updateText();
-}
 
-demo2();
 
 });
 

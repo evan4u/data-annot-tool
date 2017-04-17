@@ -2,9 +2,10 @@ var html = " My name is Evan and I like to sleep. I study at Macquarie Universit
 
 var $buttonClassInput = $("#classname")
 var $contextArea = $(".context")
+var $result = $("#result")
 
 var annotatedDataOrganised = {'O': []};
 var annotatedDataReal = [];
 var editMode = false;
 var words = [];
-var colours = {'O': [255, 255, 255]}
+var colours = {'O': [255, 255, 255]} // colours and buttons

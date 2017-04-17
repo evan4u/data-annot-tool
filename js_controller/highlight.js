@@ -1,6 +1,6 @@
 /** Highlights input keyword */
 var mark = function(words, location, keyword) {
-    var options = {'accuracy': "complementary"};
+    var options = {'accuracy': "exactly"};
     
 	location.unmark({
 	    done: function() {
@@ -16,7 +16,6 @@ var mark = function(words, location, keyword) {
 	    		}
 	    	}
 	    	var tmpArr = str == "" ? "" : str.split(" ");
-	    	console.log(tmpArr);
 	    	$(location).mark(tmpArr, options);
 	    }
 	});
