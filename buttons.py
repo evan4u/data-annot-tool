@@ -3,18 +3,18 @@ import random
 class ButtonGenerator:
 	button_bcolour = {"O": [255, 255, 255]}
 	button_fcolour = {"O": [0, 0, 0]}
-	button_data_html = ['<button class="classButtons O" style="width:100%; background-color:rgb(255,255,255); color:rgb(0,0,0); margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">O</button>']
-	last_button_added = button_data_html[0]
+	button_data_html = []
+	last_button_added = ""
 	word_class = []
 
 	def __init__(self):
 		print ("starting button generator...")
 
-	def add_button(self, className, bcolour, fcolour, random=True):
-		self.button_bcolour[className] = self.random_colour() if random==True else bcolour
-		self.button_fcolour[className] = self.choose_fcolour(bcolour)
-		new_button = '<button class="classButtons '+className+'" style="width:100%; background-color:'+self.rgb_format(self.button_bcolour[className])+'; color:'+self.rgb_format(self.button_fcolour[className])+'; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+className+'</button>'
-		
+	def add_button(self, class_name, bcolour, fcolour, random=True):
+		self.button_bcolour[class_name] = self.random_colour() if random==True else bcolour
+		self.button_fcolour[class_name] = self.choose_fcolour(bcolour)
+		new_button = '<button class="classButtons '+class_name+'" style="width:100%; background-color:'+self.rgb_format(self.button_bcolour[class_name])+'; color:'+self.rgb_format(self.button_fcolour[class_name])+'; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+class_name+'</button>'
+			
 		self.button_data_html.append(new_button)
 		self.last_button_added = new_button
 

@@ -28,6 +28,11 @@ def index():
 def css(filepath):
     return static_file(filepath, root="css")
 
+@application.route('/images/<filepath:re:.*\.png>')
+def images(filepath):
+    print("hereree")
+    return static_file(filepath, root="images")
+
 
 @application.route('/js_controller/<filepath:re:.*\.js>')
 def js_controller(filepath):
@@ -42,10 +47,11 @@ def js_library(filepath):
 @application.route('/default_annotation', method='POST')
 def default_annotation():
     data = request.json
-    bgen.add_button(data['className'], data['bcolour'], data['fcolour'])
-    info['buttons'] = bgen.get_html_format()
-    response.set_header('Location', '/')
-    return bgen.get_last_button_html()
+    if data['className'] not in bgen.button_bcolour.keys():
+        bgen.add_button(data['className'], data['bcolour'], data['fcolour'])
+        info['buttons'] = bgen.get_html_format()
+        response.set_header('Location', '/')
+        return bgen.get_last_button_html()
 
 @application.route('/annotated_results', method='GET')
 def default_annotation():
@@ -97,7 +103,7 @@ def do_upload():
     if is_annot_file:
         classes = fproc.parse_annotated_text(file_content)
         for cls in classes:
-            if cls != 'O':
+            if cls != 'O' and cls not in bgen.button_bcolour.keys():
                 bgen.add_button(cls, [255,0,0], [255,255,255])
 
         info['buttons'] = "".join(bgen.button_data_html)
@@ -107,7 +113,7 @@ def do_upload():
     else:
         info['content'] = fproc.str_to_span(file_content)
         info['result'] = fproc.str_to_default_annotation(file_content)
-        info['buttons'] = bgen.get_last_button_html
+        info['buttons'] = ""
 
         #upload.save(file_path)
     response.set_header('Location', '/')
@@ -116,7 +122,14 @@ def do_upload():
 
 @application.route('/save', method='POST')
 def save_file():
-    data = request.files.upload
+    data = request.json
+    save_path = './annotated_results'
+    complete_name = os.path.join(save_path, data['filename'])
+    text_file = open(complete_name, "w")
+    text_file.write(data['annot_output'])
+    text_file.close()
+
+    print (data['annot_output'])
 
 if __name__ == '__main__':
     application.run(debug=True, port=8010)

@@ -81,11 +81,7 @@ function stringToAnnotDataDefault(str) {
 
 
 // switch
-$("[name='my-checkbox']").bootstrapSwitch({
-	disabled:true
-});
 $("[name='my-checkbox']").bootstrapSwitch(); //initialized somewhere
-$("[name='my-checkbox']").bootstrapSwitch('disabled',true);
 $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
 	editMode = state;
 });
@@ -93,10 +89,9 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
 $("#uploadinput").change(function() {
 	this.form.submit();
-	console.log("goes here");
+	console.log("uploading...");
 
 	//demon2();
-
 	//loadAnnotedText($result.html());
 });
 
@@ -127,6 +122,33 @@ function get_annotated_results() {
 
 
 
+
+
 });
 
+function saveButton() {
+	var filename = prompt("Save as....");
+	if (filename != "") {
+		annot_output = $result.html()
 
+		json = {'filename': filename, 'annot_output': annot_output}
+
+		$.ajax({
+			url: '/save',
+			type: 'POST',
+			data: JSON.stringify(json),
+			contentType: 'application/json',
+			success: function(annot_results) {
+				alert("Save Complete")
+			},
+			error: function() {
+				alert("SOMETHING IS NOT RIGHT");
+			}
+		});
+	}
+}
+
+$(".undo").on('click', function() {
+	words.pop();
+	mark(words, $contextArea, ""); 
+});

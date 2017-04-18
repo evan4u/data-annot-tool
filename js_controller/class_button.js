@@ -22,7 +22,7 @@ function create_a_class_button(className, random=true) {
 
 		send_button_data({'className': className,'bcolour': [0,0,0], 'fcolour': [1,1,1]});
 
-		$("[name='my-checkbox']").bootstrapSwitch('disabled',false);
+
 		$buttonClassInput.val('');
 	}
 

@@ -18,7 +18,7 @@ O	","
 O	a
 O	native
 O	of
-B-Loc	North/Carolina
+B-Loc	North Carolina
 O	","
 O	working
 O	the

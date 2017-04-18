@@ -8,15 +8,21 @@ var mark = function(words, location, keyword) {
 	    		var str = "";
 	    		index = words.indexOf(keyword);
 	    		if (index < 0) {
+
 	    			words.push(keyword);
 	    			str = words.join(" ");
 	    		}
 	    		else {
 	    			words.splice(keyword, 1)
 	    		}
+	    		var tmpArr = str == "" ? "" : str.split(" ");
+	    		$(location).mark(tmpArr, options);
 	    	}
-	    	var tmpArr = str == "" ? "" : str.split(" ");
-	    	$(location).mark(tmpArr, options);
+	    	else {
+	    		$(location).mark(words, options);
+	    	}
+
+	    	
 	    }
 	});
 };

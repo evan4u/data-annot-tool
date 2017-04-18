@@ -79,7 +79,7 @@ Author: Evan Bernardez, Macquarie University
                               
                               <div style="padding-left: 5px;" class="panel-heading">
                                     <h4 class="panel-title">Annotation Area</h4>
-
+                                    <div class="box"><img class="undo" src="/images/undo_icon.png"></div>
                               </div>  
                                                  
                               <div id="collapseOne" class="panel-collapse collapse in"  style="height:350px;">
@@ -87,12 +87,16 @@ Author: Evan Bernardez, Macquarie University
                                           <div class="panel panel-default">
                                                 <div class="panel-body context" style="height:320px; overflow-y: scroll;">
                                                 {{!content}}
+
                                                  </div>
                                           </div>
                                     </div>
                               </div>
                                <div style="padding-left: 25px;" class="panel-heading">
                                     <h4 class="panel-title">File: <span style="font-weight:normal;">{{filename}} <span></h4>
+                                     
+
+
                               </div>
                         </div>
 
@@ -108,6 +112,7 @@ Author: Evan Bernardez, Macquarie University
                                                        <div id="buttonArea" class="form-group" style="padding:10px;">
                                                             <label for="classname">Add Class:</label>
                                                             <input type="text" class="form-control" id="classname" style="margin-bottom:10px;">
+                                                            <button class="classButtons O" style="width:100%; background-color:rgb(255,255,255); color:rgb(0,0,0); margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">O</button>
                                                              {{!buttons}}
                                                       </div>
                                                  </div>
@@ -118,6 +123,7 @@ Author: Evan Bernardez, Macquarie University
                               <div style="padding: 7.5px;" class="panel-heading">
                                     <h4 class="panel-title">
                                     Delete Classes:
+
                                           <input id="toggle-annot" type="checkbox" name="my-checkbox" data-size="mini" >
 
                                     </h4>
