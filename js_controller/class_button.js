@@ -129,14 +129,10 @@ function updateAllAnnotatedData() {
 
 /* Deletes a button */
 function deleteButton(obj, className) {
-	send_button_delete({'name': className})
+	
 	var tmp = {};
 	if (confirm("Are you sure you want to delete "+className)) {
-		for (var i = 0; i  < annotatedDataReal.length; i++) {
-			if (annotatedDataReal[i][0] == className) {
-				annotatedDataReal[i][0] = "O";
-			}
-		}
+		send_button_delete({'name': className})
 		delete colours[className];
 		$(obj).remove();
 	}

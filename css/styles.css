@@ -5,7 +5,7 @@
     cursor: pointer; 
 }
 .undo {
-    width:33px;
+    width:25px;
     position:absolute;
     bottom:2px;
     right:10px;
@@ -14,7 +14,7 @@
 
 
 .undo:active {
-  width:30px;
+  width:20px;
 }
 
 /* start of old file */
