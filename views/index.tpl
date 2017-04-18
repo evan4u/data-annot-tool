@@ -82,6 +82,7 @@ Author: Evan Bernardez, Macquarie University
                                     <div class="box"><img class="undo" src="/images/undo_icon.png"></div>
                               </div>  
                                                  
+
                               <div id="collapseOne" class="panel-collapse collapse in"  style="height:350px;">
                                     <div class="panel-body">
                                           <div class="panel panel-default">
@@ -144,6 +145,7 @@ Author: Evan Bernardez, Macquarie University
                                                       <span class="glyphicon glyphicon-plus"></span>
                                                       Results
                                                 </a>
+                                                <div class="box"><button style="background: #eb7804;" type="button" id="download">Download</button></div>
                                           </h4>
                                     </div>
                                     <div id="collapseThree" class="panel-collapse collapse">

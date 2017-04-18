@@ -11,7 +11,19 @@
     right:10px;
 }
 
+#download {
+    width:85px;
+    padding: 7px;
+    position:absolute;
+    bottom:4px;
+    right:-10px;
+    font-weight: normal;
+    color:white;
+    font-size: 14px
 
+}
+
+button:focus {outline:0;}
 
 .undo:active {
   width:20px;

@@ -120,7 +120,30 @@ function get_annotated_results() {
 	});
 }
 
+$(".undo").on('click', function() {
+	words.pop();
+	mark(words, $contextArea, ""); 
+});
 
+
+$("#download").on('click', function() {
+	get_annotated_results();
+	
+	var a = document.createElement("a");
+	document.body.appendChild(a);
+	
+	// DELAY IS SET SO RESULT IS UPDATED FIRST
+	setTimeout(function sample() {
+		var annot_output = $("#result").html();	
+	  	var file = new Blob([annot_output], {type: 'text/plain'});
+	  	a.href = window.URL.createObjectURL(file);
+	  	a.download = "result.txt"
+	  	a.click()
+	  	window.URL.revokeObjectURL(a.href);
+	}, 1000)
+
+  	
+});
 
 
 
@@ -148,7 +171,5 @@ function saveButton() {
 	}
 }
 
-$(".undo").on('click', function() {
-	words.pop();
-	mark(words, $contextArea, ""); 
-});
+
+

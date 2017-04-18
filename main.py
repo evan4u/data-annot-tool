@@ -129,7 +129,6 @@ def save_file():
     text_file.write(data['annot_output'])
     text_file.close()
 
-    print (data['annot_output'])
 
 if __name__ == '__main__':
     application.run(debug=True, port=8010)
