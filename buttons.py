@@ -1,7 +1,7 @@
 import random
 
 class ButtonGenerator:
-	button_bcolour = {"O": [255, 255, 255]}
+	button_bcolour = {"O": [245, 245, 245]}
 	button_fcolour = {"O": [0, 0, 0]}
 	button_data_html = []
 	last_button_added = ""

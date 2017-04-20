@@ -87,7 +87,9 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 });
 
 
-$("#uploadinput").change(function() {
+$("#uploadinput").change(function(event) {
+	console.log("here")
+	event.stopPropagation();
 	this.form.submit();
 	console.log("uploading...");
 

@@ -109,13 +109,11 @@ def do_upload():
         info['buttons'] = "".join(bgen.button_data_html)
         output_content = fproc.token_to_span_colour(bgen)
         info['content'] = output_content
-        
     else:
         info['content'] = fproc.str_to_span(file_content)
         info['result'] = fproc.str_to_default_annotation(file_content)
         info['buttons'] = ""
 
-        #upload.save(file_path)
     response.set_header('Location', '/')
     return template('views/index', info)
 
@@ -126,7 +124,7 @@ def save_file():
     save_path = './annotated_results'
     complete_name = os.path.join(save_path, data['filename'])
     text_file = open(complete_name, "w")
-    text_file.write(data['annot_output'])
+    text_file.write(fproc.output_annotated_str())
     text_file.close()
 
 

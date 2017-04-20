@@ -1,28 +1,7 @@
 /* Helper function used to create class buttons */
 function create_a_class_button(className, random=true) {
 	if (className != null) {
-		/*
-		var r,g,b;
-		if (random) {
-			r = className != 'O' ? Math.floor(Math.random() * (256)) : 255;
-			g = className != 'O' ? Math.floor(Math.random() * (256)) : 255;
-			b = className != 'O' ? Math.floor(Math.random() * (256)) : 255;
-			colours[className] = className != 'O' ? [r,g,b] : [255,255,255];
-		}
-		else {
-			colours[className] = className != 'O' ? [r,g,b] : [255,0,0];
-		}
-		r = colours[className][0], g = colours[className][1], b = colours[className][2];
-		var colour = "rgb("+r+","+g+","+b+")";	
-		var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
-		var altClassName = className.replace(/\s/g, '');
-		$("#buttonArea").append('<button class="classButtons '+altClassName+'" style="width:100%; background-color:'+colour+'; color:'+fontColour+'; margin: 5px; border-radius: 4px; outline:none;">'+className+'</button>');
-		var fontColour = isColorDark(r,g,b) ? [255,255,255] : [0,0,0];
-		*/
-
 		send_button_data({'className': className,'bcolour': [0,0,0], 'fcolour': [1,1,1]});
-
-
 		$buttonClassInput.val('');
 	}
 
@@ -32,9 +11,10 @@ function create_a_class_button(className, random=true) {
 
 /* maps word to a class, called when class button click */
 function addTokensToClass(classAnnot) {
+	console.log("here");
+	console.log($(this).html())
 	if (classAnnot in annotatedDataOrganised) {
-		annotatedDataOrganised[classAnnot] = annotatedDataOrganised[classAnnot].concat(words);
-		
+		annotatedDataOrganised[classAnnot] = annotatedDataOrganised[classAnnot].concat(words);		
 	} else {
 		annotatedDataOrganised[classAnnot] = words;
 	}
