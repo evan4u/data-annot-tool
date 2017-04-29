@@ -1,6 +1,6 @@
 
 import nltk
-
+import re
 class FileProcessor:
 
 	annotated_tokens = []
@@ -67,15 +67,16 @@ class FileProcessor:
 		Returns annotated output in string format for saving and displaying
 		'''
 		output_str = ""
+		token_pos = 1
 		for token in self.annotated_tokens:
-			output_str += "%s\t%s\n"%(token[0], token[1])
+			output_str += "%s\t%s\t%s\n"%(token[0], token_pos, token[1])
+			token_pos += 1
 		return output_str
 
 	def token_to_span_colour(self, bgen):
 		str = ""
 		get_button_bcolour = bgen.get_button_bcolour()
 		get_button_fcolour = bgen.get_button_fcolour()
-		print (self.annotated_tokens)
 		for token in self.annotated_tokens:
 			bcolour = bgen.rgb_format(get_button_bcolour[token[0]])
 			fcolour = bgen.rgb_format(get_button_fcolour[token[0]])
@@ -106,17 +107,15 @@ class FileProcessor:
 		parses annotated data and returns the new classes created
 		'''
 		classes = set()
-		str_split = str.split('\n')
-		str_split = str_split[:-1]
+		tmp_str_arr = str.split('\n')
+		str_arr = []
+		for str in tmp_str_arr:
+			str_arr.append(re.split('\t\d+\t', str))
 
-		tmp_annotated_text = []
+		self.annotated_tokens = str_arr[:-1]
+		for token in self.annotated_tokens:
+			classes.add(token[0])
 
-		for token in str_split:
-			tmp = token.split('\t')
-			classes.add(tmp[0])
-			tmp_annotated_text.append([tmp[0], tmp[1].replace('\r', '')])
-
-		self.annotated_tokens = tmp_annotated_text
 		return classes
 
 

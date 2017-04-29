@@ -1,6 +1,5 @@
 
 $(function() {
-//$contextArea.html(html);
 
 /** Highlights clicked or highlighted word */
 $contextArea.mouseup(function(event) {
@@ -8,6 +7,7 @@ $contextArea.mouseup(function(event) {
 		var token = cleanString(window.getSelection().toString());
 		if (token != undefined) {
 			mark(words, $contextArea, token); 
+			console.log(words);
 		}
 		$buttonClassInput.focus();
 	}
@@ -79,7 +79,6 @@ function stringToAnnotDataDefault(str) {
 }
 
 
-
 // switch
 $("[name='my-checkbox']").bootstrapSwitch(); //initialized somewhere
 $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
@@ -88,13 +87,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
 
 $("#uploadinput").change(function(event) {
-	console.log("here")
-	event.stopPropagation();
 	this.form.submit();
-	console.log("uploading...");
-
-	//demon2();
-	//loadAnnotedText($result.html());
 });
 
 

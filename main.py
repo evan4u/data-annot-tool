@@ -1,3 +1,7 @@
+'''
+Server
+'''
+
 __author__ = 'Evan Bernardez'
 
 import os
@@ -30,7 +34,6 @@ def css(filepath):
 
 @application.route('/images/<filepath:re:.*\.png>')
 def images(filepath):
-    print("hereree")
     return static_file(filepath, root="images")
 
 
@@ -97,15 +100,16 @@ def do_upload():
     is_annot_file = False
     for i in range(len(file_raw)):
         if file_raw[i] == 9:
-            is_annot_file = file_raw[i+1] == 68
+            print (file_raw[i+1])
+            is_annot_file = file_raw[i+1] == 68 or 77
             break
+
 
     if is_annot_file:
         classes = fproc.parse_annotated_text(file_content)
         for cls in classes:
             if cls != 'O' and cls not in bgen.button_bcolour.keys():
                 bgen.add_button(cls, [255,0,0], [255,255,255])
-
         info['buttons'] = "".join(bgen.button_data_html)
         output_content = fproc.token_to_span_colour(bgen)
         info['content'] = output_content

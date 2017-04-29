@@ -1,0 +1,316 @@
+O	My
+O	name
+O	is
+Name	Johnny
+O	Walker
+O	and
+O	I
+O	like
+O	to
+O	sleep
+O	.
+O	I
+O	study
+O	at
+Name	Macquarie University
+O	where
+O	I
+O	study
+O	engineering
+O	.
+O	Here
+O	are
+O	some
+O	noises
+O	animals
+O	make
+O	:
+Animal Sounds	meow
+O	,
+Animal Sounds	woof
+O	,
+Animal Sounds	ruff
+O	,
+Animal Sounds	bark
+O	,
+Animal Sounds	koo koo
+O	,
+Animal Sounds	grrrr
+O	,
+Animal Sounds	moo
+O	,
+Animal Sounds	ribbit
+O	,
+Animal Sounds	hsssss
+O	,
+O	and
+O	that
+O	is
+O	all
+O	i
+O	can
+O	remember
+O	.
+O	My
+O	name
+O	is
+Name	Johnny
+O	and
+O	I
+O	like
+O	to
+O	sleep
+O	.
+O	I
+O	study
+O	at
+Name	Macquarie University
+O	where
+O	I
+O	study
+O	engineering
+O	.
+O	My
+O	name
+O	is
+Name	Johnny
+O	and
+O	I
+O	like
+O	to
+O	sleep
+O	.
+O	I
+O	study
+O	at
+Name	Macquarie University
+O	where
+O	I
+O	study
+O	engineering
+O	.
+O	Here
+O	are
+O	some
+O	noises
+O	animals
+O	make
+O	:
+Animal Sounds	meow
+O	,
+Animal Sounds	woof
+O	,
+Animal Sounds	ruff
+O	,
+Animal Sounds	bark
+O	,
+Animal Sounds	koo koo
+O	,
+Animal Sounds	grrrr
+O	,
+Animal Sounds	moo
+O	,
+Animal Sounds	ribbit
+O	,
+Animal Sounds	hsssss
+O	,
+O	and
+O	that
+O	is
+O	all
+O	i
+O	can
+O	remember
+O	.
+O	My
+O	name
+O	is
+Name	Johnny
+O	and
+O	I
+O	like
+O	to
+O	sleep
+O	.
+O	I
+O	study
+O	at
+Name	Macquarie University
+O	where
+O	I
+O	study
+O	engineering
+O	.
+O	My
+O	name
+O	is
+Name	Johnny
+O	and
+O	I
+O	like
+O	to
+O	sleep
+O	.
+O	I
+O	study
+O	at
+Name	Macquarie University
+O	where
+O	I
+O	study
+O	engineering
+O	.
+O	Here
+O	are
+O	some
+O	noises
+O	animals
+O	make
+O	:
+Animal Sounds	meow
+O	,
+Animal Sounds	woof
+O	,
+O	ruf
+O	My
+O	name
+O	is
+Name	Evan
+O	and
+O	I
+O	like
+O	to
+O	sleep
+O	.
+O	I
+O	study
+O	at
+Name	Macquarie University
+O	where
+O	I
+O	study
+O	engineering
+O	.
+O	My
+O	name
+O	is
+Name	Johnny
+O	and
+O	I
+O	like
+O	to
+O	sleep
+O	.
+O	I
+O	study
+O	at
+Name	Macquarie University
+O	where
+O	I
+O	study
+O	engineering
+O	.
+O	Here
+O	are
+O	some
+O	noises
+O	animals
+O	make
+O	:
+Animal Sounds	meow
+O	,
+Animal Sounds	woof
+O	,
+Animal Sounds	ruff
+O	,
+Animal Sounds	bark
+O	,
+Animal Sounds	koo koo
+O	,
+Animal Sounds	grrrr
+O	,
+Animal Sounds	moo
+O	,
+Animal Sounds	ribbit
+O	,
+Animal Sounds	hsssss
+O	,
+O	and
+O	that
+O	is
+O	all
+O	i
+O	can
+O	remember
+O	.
+O	My
+O	name
+O	is
+Name	Evan
+O	and
+O	I
+O	like
+O	to
+O	sleep
+O	.
+O	I
+O	study
+O	at
+Name	Macquarie University
+O	where
+O	I
+O	study
+O	engineering
+O	.
+O	My
+O	name
+O	is
+Name	Johnny
+O	and
+O	I
+O	like
+O	to
+O	sleep
+O	.
+O	I
+O	study
+O	at
+Name	Macquarie University
+O	where
+O	I
+O	study
+O	engineering
+O	.
+O	Here
+O	are
+O	some
+O	noises
+O	animals
+O	make
+O	:
+Animal Sounds	meow
+O	,
+Animal Sounds	woof
+O	,
+Animal Sounds	ruff
+O	,
+Animal Sounds	bark
+O	,
+Animal Sounds	koo koo
+O	,
+Animal Sounds	grrrr
+O	,
+Animal Sounds	moo
+O	,
+Animal Sounds	ribbit
+O	,
+Animal Sounds	hsssss
+O	,
+O	and
+O	that
+O	is
+O	all
+O	i
+O	can
+O	remember
+O	.
