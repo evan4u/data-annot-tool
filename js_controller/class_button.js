@@ -4,11 +4,13 @@ function create_a_class_button(className, random=true) {
 		send_button_data({'className': className,'bcolour': [0,0,0], 'fcolour': [1,1,1]});
 		$buttonClassInput.val('');
 	}
-
-
-
 }
-
+function create_a_relation_button(className) {
+	if (className != null) {
+		send_relation_button_data({'className': className,'bcolour': [0,0,0], 'fcolour': [1,1,1]});
+		$buttonClassInput.val('');
+	}
+}
 /* maps word to a class, called when class button click */
 function addTokensToClass(classAnnot) {
 	console.log("here");
@@ -40,6 +42,21 @@ function send_button_data(data) {
 	});
 }
 
+
+function send_relation_button_data(data) {
+	$.ajax({
+		url: '/add_relation_button',
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		success: function(json) {
+			$("#buttonArea span").html(json['buttons']);
+		},
+		error: function() {
+			alert("SOMETHING IS NOT RIGHT");
+		}
+	});
+}
 
 function send_new_annot(data) {
 	$.ajax({

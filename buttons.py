@@ -58,5 +58,23 @@ class ClassButton:
 
 
 class RelationButton:
+	button_names = []
+	button_data_html = []
+
 	def __init__(self):
 		print ("starting class button generator...")
+
+	def add_button(self, class_name, random=True):
+		self.button_names.append(class_name)
+		new_button = '<button class="relationButtons '+class_name+'" style="width:100%;background-color:red; color:white; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+class_name+'</button>'			
+		self.button_data_html.append(new_button)
+
+	def get_html_format(self):
+		return "".join(self.button_data_html)
+		
+
+
+
+
+
+

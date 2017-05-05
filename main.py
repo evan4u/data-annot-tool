@@ -6,7 +6,7 @@ __author__ = 'Evan Bernardez'
 
 import os
 from processor import FileProcessor
-from buttons import ClassButton
+from buttons import ClassButton, RelationButton
 from bottle import Bottle, template, static_file, request, response, HTTPError, redirect, get
 import re
 
@@ -22,6 +22,7 @@ info = {
 
 fproc = FileProcessor()
 class_button = ClassButton()
+relation_button = RelationButton()
 
 @application.route('/')
 def index(): 
@@ -53,8 +54,17 @@ def default_annotation():
     if data['className'] not in class_button.button_bcolour.keys():
         class_button.add_button(data['className'], data['bcolour'], data['fcolour'])
         info['buttons'] = class_button.get_html_format()
-        response.set_header('Location', '/')
         return {'buttons': info['buttons']}
+
+
+@application.route('/add_relation_button', method='POST')
+def add_relation_button():
+    data = request.json
+    if data['className'] not in relation_button.button_names:
+        relation_button.add_button(data['className'])
+        info['buttons'] = relation_button.get_html_format()
+        return {'buttons': info['buttons']}
+
 
 @application.route('/annotated_results', method='GET')
 def default_annotation():
@@ -132,11 +142,19 @@ def save_file():
     text_file.close()
 
 
-#@application.route('/switch_to_relation', method='GET')
-#def switch_to_relation():
-    
+@application.route('/switch_to_relation', method='GET')
+def switch_to_relation():
+    buttons = relation_button.get_html_format()
+    print ('relation buttons')
+    print (buttons)
+    return  {'buttons': buttons}
 
 
+@application.route('/switch_to_class', method='GET')
+def switch_to_class():
+    buttons = class_button.get_html_format()
+    content = fproc.token_to_span_colour(class_button)
+    return  {'content': content, 'buttons': buttons}
 
 if __name__ == '__main__':
     application.run(debug=True, port=8010)

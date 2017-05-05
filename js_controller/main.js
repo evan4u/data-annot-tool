@@ -2,11 +2,11 @@
 $(function() {
 
 /** Highlights clicked or highlighted word */
-$contextArea.mouseup(function(event) {
+$contentArea.mouseup(function(event) {
 	if (!editMode) {
 		var token = cleanString(window.getSelection().toString());
 		if (token != undefined) {
-			mark(words, $contextArea, token); 
+			mark(words, $contentArea, token); 
 			console.log(words);
 		}
 		$buttonClassInput.focus();
@@ -23,10 +23,12 @@ Object.size = function(obj) {
 };
 
 /* When user submits a new button name, it creates it here  */
-	$buttonClassInput.keyup(function(event){  		
+$buttonClassInput.keyup(function(event){  		
     if(event.keyCode == 13){
-        if (validClassInput($(this).val())) {
+        if (validClassInput($(this).val()) && selection_mode == "class") {
         	create_a_class_button($(this).val());
+        } else if (validClassInput($(this).val())){
+        	create_a_relation_button($(this).val());
         }
     }
 });
@@ -117,7 +119,7 @@ function get_annotated_results() {
 
 $(".undo").on('click', function() {
 	words.pop();
-	mark(words, $contextArea, ""); 
+	mark(words, $contentArea, ""); 
 });
 
 
@@ -140,13 +142,13 @@ $("#download").on('click', function() {
 
 
 $("#relationmode").on('click', function() {
+	selection_mode = "relation"
 	$.ajax({
 		url: '/switch_to_relation',
 		type: 'GET',
 		contentType: 'application/json',
 		success: function(json) {
-			console.log(json['content']);
-			console.log(json['buttons']);
+			$buttonArea.html(json['buttons']);
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");
@@ -154,12 +156,15 @@ $("#relationmode").on('click', function() {
 	});});
 
 $("#classmode").on('click', function() {
+	selection_mode = "class"
 	$.ajax({
-		url: '/annotated_results',
+		url: '/switch_to_class',
 		type: 'GET',
 		contentType: 'application/json',
-		success: function(annot_results) {
-			$result.html(annot_results);
+		success: function(json) {
+			console.log(json['content'])
+			$contentArea.html(json['content']);
+			$buttonArea.html(json['buttons']);
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");

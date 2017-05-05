@@ -39,7 +39,7 @@ function updateText() {
 		var fontColour = isColorDark(r,g,b) ? 'white' : 'black';
 		str += "<span class='someToken' style='color:" + fontColour+ "; background-color: "+colour + "'>"+annotatedDataReal[i][1]+"</span> ";
 	}
-	$contextArea.html(str);
+	$contentArea.html(str);
 }
 
 function outputAnnotatedData() {
