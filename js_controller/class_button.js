@@ -30,6 +30,8 @@ function addTokensToClass(classAnnot) {
 function addTokensToRelation(relation) {
 	if (words.length == 2) {
 		send_new_relation({'relation': relation, 'domain': words[0], 'range': words[1]})
+		words = [];
+		mark(words, $contentArea, "");
 	}
 }
 

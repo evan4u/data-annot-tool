@@ -8,7 +8,6 @@ var mark = function(words, location, keyword) {
 	    		var str = "";
 	    		index = words.indexOf(keyword);
 	    		if (index < 0) {
-
 	    			words.push(keyword);
 	    			str = words.join(" ");
 	    		}

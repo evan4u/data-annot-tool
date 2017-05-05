@@ -68,7 +68,7 @@ def add_relation_button():
 
 @application.route('/annotated_results', method='GET')
 def default_annotation():
-    return fproc.output_annotated_str()
+    return fproc.output_annotated_str() + '\n' + relation_button.output_relation_plain()
     
 @application.route('/update_annotation', method='POST')
 def update_annotation():
@@ -77,8 +77,6 @@ def update_annotation():
     words = data['words']
     fproc.update_annotation(class_name, words)
 
-
-    response.set_header('Location', '/')
     return fproc.token_to_span_colour(class_button)
 
 @application.route('/update_relation', method='POST')
@@ -112,8 +110,6 @@ def do_upload():
     if ext not in ('.docx', '.pdf', '.doc', '.txt'):
         filename = "File uploaded was not valid"
 
-    redirect('/')
-
     # CHECKS WHETHER THE FILE IS ANNOTATED DATA OR TEXT FILE
     is_annot_file = False
     for i in range(len(file_raw)):
@@ -136,8 +132,7 @@ def do_upload():
         info['result'] = fproc.str_to_default_annotation(file_content)
         info['buttons'] = ""
 
-    response.set_header('Location', '/')
-    return template('views/index', info)
+    redirect('/')
 
 
 @application.route('/save', method='POST')

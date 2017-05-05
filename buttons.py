@@ -77,7 +77,10 @@ class RelationButton:
 		return "".join(self.button_data_html)
 		
 	def output_relation_plain(self):
-		return 'GOOOD BOY!'
+		_str = ""
+		for relation in self.relations:
+			_str += "%s\t%s\t%s\n"%(relation[0], relation[1], relation[2])
+		return _str
 
 
 
