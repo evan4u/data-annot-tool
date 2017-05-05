@@ -81,6 +81,13 @@ def update_annotation():
     response.set_header('Location', '/')
     return fproc.token_to_span_colour(class_button)
 
+@application.route('/update_relation', method='POST')
+def update_relation():
+    data = request.json
+    relation_button.add_relation(data['relation'], data['domain'], data['range'])
+    return relation_button.output_relation_plain()
+
+
 
 @application.route('/button_delete', method='POST')
 def update_annotation():
@@ -104,7 +111,8 @@ def do_upload():
     
     if ext not in ('.docx', '.pdf', '.doc', '.txt'):
         filename = "File uploaded was not valid"
-        return "Not a valid file extension"
+
+    redirect('/')
 
     # CHECKS WHETHER THE FILE IS ANNOTATED DATA OR TEXT FILE
     is_annot_file = False

@@ -59,6 +59,7 @@ class ClassButton:
 
 class RelationButton:
 	button_names = []
+	relations = []
 	button_data_html = []
 
 	def __init__(self):
@@ -69,10 +70,14 @@ class RelationButton:
 		new_button = '<button class="relationButtons '+class_name+'" style="width:100%;background-color:red; color:white; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+class_name+'</button>'			
 		self.button_data_html.append(new_button)
 
+	def add_relation(self, relation, domain, _range):
+		self.relations.append([relation, domain, _range])
+
 	def get_html_format(self):
 		return "".join(self.button_data_html)
 		
-
+	def output_relation_plain(self):
+		return 'GOOOD BOY!'
 
 
 

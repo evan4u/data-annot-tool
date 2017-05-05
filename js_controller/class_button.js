@@ -11,7 +11,7 @@ function create_a_relation_button(className) {
 		$buttonClassInput.val('');
 	}
 }
-/* maps word to a class, called when class button click */
+/* maps word(s) to a class, called when class button click */
 function addTokensToClass(classAnnot) {
 	console.log("here");
 	console.log($(this).html())
@@ -26,6 +26,12 @@ function addTokensToClass(classAnnot) {
 	words = [];
 }
 
+/* maps tokns to a relation, called when class button click */
+function addTokensToRelation(relation) {
+	if (words.length == 2) {
+		send_new_relation({'relation': relation, 'domain': words[0], 'range': words[1]})
+	}
+}
 
 function send_button_data(data) {
 	$.ajax({
@@ -66,6 +72,23 @@ function send_new_annot(data) {
 		contentType: 'application/json',
 		success: function(json) {
 			$(".context").html(json);
+		},
+		error: function() {
+			alert("SOMETHING IS NOT RIGHT");
+		}
+	});
+}
+
+/* MAPS WORD 1 AND WORD 2 VIA RELATION */
+function send_new_relation(data) {
+	$.ajax({
+		url: '/update_relation',
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		success: function(json) {
+			console.log('success....')
+			console.log(json);
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");
@@ -127,11 +150,9 @@ function updateAllAnnotatedData() {
 
 
 /* Deletes a button */
-function deleteButton(obj, className) {
-	
-	var tmp = {};
-	if (confirm("Are you sure you want to delete "+className)) {
-		send_button_delete({'name': className})
+function deleteButton(obj, name) {	
+	if (confirm("Are you sure you want to delete "+name)) {
+		send_button_delete({'name': name})
 	}
 }
 
@@ -146,8 +167,12 @@ function isColorDark(r, g, b){
 function classButtonHandler(obj) {
 	if (!editMode) {
 		if (words.length > 0) {
-			addTokensToClass($(obj).html());
-			updateText();
+			if (selection_mode=="class") {
+				addTokensToClass($(obj).html());
+			} 
+			else if (selection_mode=="relation") {
+				addTokensToRelation($(obj).html());
+			}
 		}
 	}
 	else {
