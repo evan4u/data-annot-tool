@@ -50,9 +50,9 @@ Author: Evan Bernardez, Macquarie University
                               <li class="dropdown" >
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Annotation Mode <b class="caret"></b></a>
                                     <ul class="dropdown-menu" >
-                                          <li> <a href="javascript:void(0);" data-bind="event:{click: changeToTextMode}">Class</a> </li>
+                                          <li> <a id='classmode' href="javascript:void(0);">Class</a> </li>
                                           <li class="divider"></li>
-                                          <li> <a href="javascript:void(0);" data-bind="click: changeToSpeechMode">Relation</a> </li>
+                                          <li> <a id='relationmode'href="javascript:void(0);">Relation</a> </li>
                                     </ul>
                               </li>
                         </ul>
@@ -102,7 +102,8 @@ Author: Evan Bernardez, Macquarie University
                                                             <label for="classname">Add Class:</label>
                                                             <input type="text" class="form-control" id="classname" style="margin-bottom:10px;">
                                                             <button class="classButtons O" style="width:100%; background-color:rgb(255,255,255); color:rgb(0,0,0); margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">O</button>
-                                                             {{!buttons}}
+                                                            <span>{{!buttons}}</span>
+
                                                       </div>
                                                  </div>
                                           </div>
@@ -148,7 +149,6 @@ Author: Evan Bernardez, Macquarie University
       <script src="/js_controller/global_variables.js"></script>
       <script src="/js_controller/class_button.js"></script>
       <script src="/js_controller/highlight.js"></script>
-      <script src="/js_controller/upload.js"></script>
       <script src="/js_controller/main.js"></script>
       <style>mark{background:#eb7804; color:white;}#toggle-annot {background-color:red;}</style>
 

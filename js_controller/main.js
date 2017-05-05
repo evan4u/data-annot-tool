@@ -136,8 +136,35 @@ $("#download").on('click', function() {
 	  	a.click()
 	  	window.URL.revokeObjectURL(a.href);
 	}, 1000)
+});
 
-  	
+
+$("#relationmode").on('click', function() {
+	$.ajax({
+		url: '/switch_to_relation',
+		type: 'GET',
+		contentType: 'application/json',
+		success: function(json) {
+			console.log(json['content']);
+			console.log(json['buttons']);
+		},
+		error: function() {
+			alert("SOMETHING IS NOT RIGHT");
+		}
+	});});
+
+$("#classmode").on('click', function() {
+	$.ajax({
+		url: '/annotated_results',
+		type: 'GET',
+		contentType: 'application/json',
+		success: function(annot_results) {
+			$result.html(annot_results);
+		},
+		error: function() {
+			alert("SOMETHING IS NOT RIGHT");
+		}
+	});	
 });
 
 

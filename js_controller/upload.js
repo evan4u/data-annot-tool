@@ -1,8 +1,0 @@
-
-$(window).on("load", function() {
-
-
-
-
-
-});

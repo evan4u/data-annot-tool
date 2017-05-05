@@ -1,6 +1,6 @@
 import random
 
-class ButtonGenerator:
+class ClassButton:
 	button_bcolour = {"O": [245, 245, 245]}
 	button_fcolour = {"O": [0, 0, 0]}
 	button_data_html = []
@@ -8,7 +8,7 @@ class ButtonGenerator:
 	word_class = []
 
 	def __init__(self):
-		print ("starting button generator...")
+		print ("starting class button generator...")
 
 	def add_button(self, class_name, bcolour, fcolour, random=True):
 		self.button_bcolour[class_name] = self.random_colour() if random==True else bcolour
@@ -23,6 +23,10 @@ class ButtonGenerator:
 		if class_name in self.button_bcolour:
 			del self.button_bcolour[class_name]
 			del self.button_fcolour[class_name]
+
+			for i in range(len(self.button_data_html)):
+				if class_name in self.button_data_html[i]:
+					del self.button_data_html[i]
 
 
 	def get_html_format(self):
@@ -51,3 +55,8 @@ class ButtonGenerator:
 		darkness = 1-(0.299*colour[0] + 0.587*colour[1] + 0.114*colour[2])/255
 		return False if darkness < 0.5 else True
 
+
+
+class RelationButton:
+	def __init__(self):
+		print ("starting class button generator...")

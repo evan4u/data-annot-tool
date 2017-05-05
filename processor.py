@@ -73,13 +73,13 @@ class FileProcessor:
 			token_pos += 1
 		return output_str
 
-	def token_to_span_colour(self, bgen):
+	def token_to_span_colour(self, class_button):
 		str = ""
-		get_button_bcolour = bgen.get_button_bcolour()
-		get_button_fcolour = bgen.get_button_fcolour()
+		get_button_bcolour = class_button.get_button_bcolour()
+		get_button_fcolour = class_button.get_button_fcolour()
 		for token in self.annotated_tokens:
-			bcolour = bgen.rgb_format(get_button_bcolour[token[0]])
-			fcolour = bgen.rgb_format(get_button_fcolour[token[0]])
+			bcolour = class_button.rgb_format(get_button_bcolour[token[0]])
+			fcolour = class_button.rgb_format(get_button_fcolour[token[0]])
 			str += "<span class='someToken' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
 
 		return str

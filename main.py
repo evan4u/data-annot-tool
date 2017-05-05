@@ -6,7 +6,7 @@ __author__ = 'Evan Bernardez'
 
 import os
 from processor import FileProcessor
-from buttons import ButtonGenerator
+from buttons import ClassButton
 from bottle import Bottle, template, static_file, request, response, HTTPError, redirect, get
 import re
 
@@ -21,7 +21,7 @@ info = {
 
 
 fproc = FileProcessor()
-bgen = ButtonGenerator()
+class_button = ClassButton()
 
 @application.route('/')
 def index(): 
@@ -50,11 +50,11 @@ def js_library(filepath):
 @application.route('/default_annotation', method='POST')
 def default_annotation():
     data = request.json
-    if data['className'] not in bgen.button_bcolour.keys():
-        bgen.add_button(data['className'], data['bcolour'], data['fcolour'])
-        info['buttons'] = bgen.get_html_format()
+    if data['className'] not in class_button.button_bcolour.keys():
+        class_button.add_button(data['className'], data['bcolour'], data['fcolour'])
+        info['buttons'] = class_button.get_html_format()
         response.set_header('Location', '/')
-        return bgen.get_last_button_html()
+        return {'buttons': info['buttons']}
 
 @application.route('/annotated_results', method='GET')
 def default_annotation():
@@ -69,16 +69,16 @@ def update_annotation():
 
 
     response.set_header('Location', '/')
-    return fproc.token_to_span_colour(bgen)
+    return fproc.token_to_span_colour(class_button)
 
 
 @application.route('/button_delete', method='POST')
 def update_annotation():
     data = request.json
     class_name = data['name']
-    bgen.delete_button(class_name)
+    class_button.delete_button(class_name)
     fproc.delete_annotation(class_name)
-    return fproc.token_to_span_colour(bgen)
+    return {'content':fproc.token_to_span_colour(class_button), 'buttons': class_button.get_html_format()}
 
 
 @application.route('/upload', method='POST')
@@ -108,10 +108,10 @@ def do_upload():
     if is_annot_file:
         classes = fproc.parse_annotated_text(file_content)
         for cls in classes:
-            if cls != 'O' and cls not in bgen.button_bcolour.keys():
-                bgen.add_button(cls, [255,0,0], [255,255,255])
-        info['buttons'] = "".join(bgen.button_data_html)
-        output_content = fproc.token_to_span_colour(bgen)
+            if cls != 'O' and cls not in class_button.button_bcolour.keys():
+                class_button.add_button(cls, [255,0,0], [255,255,255])
+        info['buttons'] = "".join(class_button.button_data_html)
+        output_content = fproc.token_to_span_colour(class_button)
         info['content'] = output_content
     else:
         info['content'] = fproc.str_to_span(file_content)
@@ -130,6 +130,12 @@ def save_file():
     text_file = open(complete_name, "w")
     text_file.write(fproc.output_annotated_str())
     text_file.close()
+
+
+#@application.route('/switch_to_relation', method='GET')
+#def switch_to_relation():
+    
+
 
 
 if __name__ == '__main__':

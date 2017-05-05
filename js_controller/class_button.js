@@ -32,7 +32,7 @@ function send_button_data(data) {
 		data: JSON.stringify(data),
 		contentType: 'application/json',
 		success: function(json) {
-			$("#buttonArea").append(json);
+			$("#buttonArea span").html(json['buttons']);
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");
@@ -64,7 +64,9 @@ function send_button_delete(data) {
 		contentType: 'application/json',
 		success: function(json) {
 			//console.log(json)
-			$(".context").html(json);
+			console.log(json['buttons']);
+			$(".context").html(json['content']);
+			$("#buttonArea span").html(json['buttons']);
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");
@@ -113,8 +115,6 @@ function deleteButton(obj, className) {
 	var tmp = {};
 	if (confirm("Are you sure you want to delete "+className)) {
 		send_button_delete({'name': className})
-		delete colours[className];
-		$(obj).remove();
 	}
 }
 
