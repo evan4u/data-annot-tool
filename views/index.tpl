@@ -101,7 +101,16 @@ Author: Evan Bernardez, Macquarie University
                                                        <div id="buttonArea" class="form-group" style="padding:10px;">
                                                             <label for="classname">Add Class:</label>
                                                             <input type="text" class="form-control" id="classname" style="margin-bottom:10px;">
-                                                            <button class="classButtons O" style="width:100%; background-color:rgb(255,255,255); color:rgb(0,0,0); margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">O</button>
+                                                            <!--
+                                                            <div class="buttonContainer">
+                                                                  <div class="relationButtons">dfds</div>
+                                                                  <div class="relPulldown" onclick="showRelationList(this)">&#x25BC;
+                                                                  </div>
+
+                                                                  <div class="listContainer"><div class="relationList" >dasdasddasdasdasdasdasdasdas</div></div>
+                                                            </div>
+                                                            -->
+                                                            
                                                             <span>{{!buttons}}</span>
 
                                                       </div>

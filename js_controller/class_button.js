@@ -28,11 +28,10 @@ function addTokensToClass(classAnnot) {
 
 /* maps tokns to a relation, called when class button click */
 function addTokensToRelation(relation) {
-	if (words.length == 2) {
-		send_new_relation({'relation': relation, 'domain': words[0], 'range': words[1]})
-		words = [];
-		mark(words, $contentArea, "");
-	}
+	send_new_relation({'relation': relation, 'domain': words[0], 'range': words[1]})
+	words = [];
+	mark(words, $contentArea, "");
+	
 }
 
 function send_button_data(data) {
@@ -89,8 +88,7 @@ function send_new_relation(data) {
 		data: JSON.stringify(data),
 		contentType: 'application/json',
 		success: function(json) {
-			console.log('success....')
-			console.log(json);
+			relations = json['relations']
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");
@@ -173,7 +171,11 @@ function classButtonHandler(obj) {
 				addTokensToClass($(obj).html());
 			} 
 			else if (selection_mode=="relation") {
-				addTokensToRelation($(obj).html());
+				if (words.length == 2) {
+					addTokensToRelation($(obj).html());
+				} else {
+					alert("You must highlight 2 tokens not "+words.length+".");
+				}
 			}
 		}
 	}
@@ -186,3 +188,55 @@ function classButtonHandler(obj) {
 		$("#collapseThree").collapse('hide');
 	}
 }
+
+
+
+function showRelationList(obj) {
+	var span = $(obj).siblings('.listContainer').find('.relationList');
+	console.log($(span).html())
+	if ($(span).css('display') == 'block') {
+		$(span).css('display', 'none');
+	} 
+	else {
+		// displays relations based on click
+		button_clicked = $(obj).siblings('.relationButtons').html();
+		console.log(button_clicked)
+		var tmp = "";
+		for (var i = 0; i < relations.length; i++) {
+			if (relations[i][2] == button_clicked) {
+				tmp += relations[i][0]+"\t" +relations[i][1]+"\t" + relations[i][2] + "\n";
+			}
+		}
+		$('.relationList').css('display', 'none'); 
+
+		if (tmp != "") {
+			$(span).html(tmp);
+			console.log(tmp)
+			$(span).css('display', 'block'); 
+		}
+
+		
+		
+	}
+}
+
+/*
+$(".relPulldown").hover(
+	function() {
+		$(".relationList").css('display', 'block'); 
+		$(this).append('<span class="relationList">s</span>');
+		//$(this).find('.relationList');
+		$(".relationList").css('display', 'block'); 
+		console.log("here");
+	}, 
+	function() {
+		//$(".relationList").css('display', 'none'); 
+		//'<span class="relationList" style="display: block;"></span>'
+		var clean = $(this).html().replace('<span class="relationList" style="display: block;">s</span>', "");
+		console.log(clean);
+		$(this).html(clean);
+
+  	}
+);
+*/
+

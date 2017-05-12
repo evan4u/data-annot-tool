@@ -16,7 +16,7 @@ info = {
     'filename': "no file uploaded",
     'content': "Upload something: File -> Upload",
     'result': "",
-    'buttons': ""
+    'buttons': '<button class="classButtons O" style="width:100%; background-color:rgb(255,255,255); color:rgb(0,0,0); margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">O</button>'
 }
 
 
@@ -25,7 +25,7 @@ class_button = ClassButton()
 relation_button = RelationButton()
 
 @application.route('/')
-def index(): 
+def index():
     return template('views/index', info)
 
 
@@ -82,8 +82,8 @@ def update_annotation():
 @application.route('/update_relation', method='POST')
 def update_relation():
     data = request.json
-    relation_button.add_relation(data['relation'], data['domain'], data['range'])
-    return relation_button.output_relation_plain()
+    relation_button.add_relation(data['domain'], data['range'], data['relation'])
+    return {'output': relation_button.output_relation_plain(), 'relations': relation_button.relations}
 
 
 

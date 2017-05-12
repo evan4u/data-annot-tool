@@ -1,3 +1,84 @@
+.relationButtons {
+  background-color:#eb7804; 
+  color: white; 
+  margin: 0px auto; 
+  border-radius: 4px; 
+  border-width: 2px;
+  border-style: solid;
+  padding:3px;
+  cursor: pointer;
+  border-left-color: #d3d3d3;
+  border-right-color: grey;
+  border-top-color: #d3d3d3;
+  border-bottom-color: grey;
+  margin-top: 10px;
+  text-align: center;
+  width: 90%;
+  float:left;
+}
+
+.relationButtons:hover{
+  background-color:#DD6400;
+}
+
+
+.buttonContainer {
+  width:100%;
+}
+
+
+.relationButtons:active, .relPulldown:active {
+  border-left-color: grey;
+  border-right-color: #d3d3d3;
+  border-top-color: grey;
+  border-bottom-color: #d3d3d3;
+}
+
+
+.relPulldown {
+  padding:3px;
+  text-align: center;
+  width:8%;
+  font-color:white;
+  background-color:#eb7804; 
+  float:left;
+  margin-top: 10px;
+  border-radius: 4px; 
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+ 
+}
+
+
+.relPulldown:hover {
+  background-color:#DD6400;
+}
+
+
+.relationList {
+  position: absolute;
+  float:right;
+  margin-left:5px;
+  display:none;
+  background-color:white;
+
+  
+
+  border-radius: 4px; 
+  border-width: 2px;
+  border-style: solid;
+  border-color: grey;
+}
+
+.listContainer {
+  float:right;
+
+  width: 100%;
+  z-index:1;
+}
+
+
 .box {
 
     position:relative;
@@ -22,6 +103,8 @@
     font-size: 14px
 
 }
+
+
 
 button:focus {outline:0;}
 
@@ -217,7 +300,7 @@ div {
 .settings-div {
 
       margin: auto;
-      background: #c0c0c0; /*To change color of backgroun */
+      background: #c0c0c0; /*To change color of background */
       border: 3px solid #FFF;
       width: 95%;
 }

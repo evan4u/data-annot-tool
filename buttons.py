@@ -3,7 +3,7 @@ import random
 class ClassButton:
 	button_bcolour = {"O": [245, 245, 245]}
 	button_fcolour = {"O": [0, 0, 0]}
-	button_data_html = []
+	button_data_html = ['<button class="classButtons O" style="width:100%; background-color:rgb(255,255,255); color:rgb(0,0,0); margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">O</button>']
 	last_button_added = ""
 	word_class = []
 
@@ -63,15 +63,21 @@ class RelationButton:
 	button_data_html = []
 
 	def __init__(self):
-		print ("starting class button generator...")
+		print ("starting relation button generator...")
 
 	def add_button(self, class_name, random=True):
 		self.button_names.append(class_name)
-		new_button = '<button class="relationButtons '+class_name+'" style="width:100%;background-color:red; color:white; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+class_name+'</button>'			
-		self.button_data_html.append(new_button)
+		#new_button = '<div class="buttonContainer"><div class="relationButtons '+class_name+'" onclick="classButtonHandler(this)">'+class_name+' <div class="relPulldown" onclick="showRelationList(this)">&#x25BC;<span class="relationList" >s</span></div>'
+		div_left = '<div class="buttonContainer"><div class="relationButtons '+class_name+'" onclick="classButtonHandler(this)"">'+class_name+'</div>'
+		div_right = '</div>'
+		
+		pull_down = '<div class="relPulldown" onclick="showRelationList(this)">&#x25BC;</div><div class="listContainer"><pre class="relationList"></pre></div>'
+		button_html = div_left+pull_down+div_right
 
-	def add_relation(self, relation, domain, _range):
-		self.relations.append([relation, domain, _range])
+		self.button_data_html.append(button_html)
+
+	def add_relation(self, _range, domain, relation):
+		self.relations.append([_range, domain, relation])
 
 	def get_html_format(self):
 		return "".join(self.button_data_html)

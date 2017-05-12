@@ -6,8 +6,17 @@ $contentArea.mouseup(function(event) {
 	if (!editMode) {
 		var token = cleanString(window.getSelection().toString());
 		if (token != undefined) {
-			mark(words, $contentArea, token); 
-			console.log(words);
+			if (selection_mode == "relation") {
+
+				if (words.length <= 1) {
+					mark(words, $contentArea, token); 
+				} else {
+					alert("Only "+(words.length+1)+" tokens were selection. You must highlight 2 unique tokens.");
+				}
+			}
+			else {
+				mark(words, $contentArea, token); 
+			}
 		}
 		$buttonClassInput.focus();
 	}
@@ -143,6 +152,7 @@ $("#download").on('click', function() {
 
 $("#relationmode").on('click', function() {
 	selection_mode = "relation"
+	$("label[for='classname']").text("Add Relation:");
 	$.ajax({
 		url: '/switch_to_relation',
 		type: 'GET',
@@ -157,6 +167,7 @@ $("#relationmode").on('click', function() {
 
 $("#classmode").on('click', function() {
 	selection_mode = "class"
+	$("label[for='classname']").text("Add Class:");
 	$.ajax({
 		url: '/switch_to_class',
 		type: 'GET',

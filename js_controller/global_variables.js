@@ -11,3 +11,5 @@ var editMode = false;
 var words = [];
 var colours = {'O': [255, 255, 255]} // colours and buttons
 var selection_mode = "class";
+
+var relations = []
