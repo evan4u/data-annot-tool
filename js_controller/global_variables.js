@@ -9,6 +9,8 @@ var annotatedDataOrganised = {'O': []};
 var annotatedDataReal = [];
 var editMode = false;
 var words = [];
+var words_pos = [];
+
 var colours = {'O': [255, 255, 255]} // colours and buttons
 var selection_mode = "class";
 

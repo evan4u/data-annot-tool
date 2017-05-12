@@ -74,15 +74,16 @@ class FileProcessor:
 		return output_str
 
 	def token_to_span_colour(self, class_button):
-		str = ""
+		_str = ""
 		get_button_bcolour = class_button.get_button_bcolour()
 		get_button_fcolour = class_button.get_button_fcolour()
+		token_pos = 1
 		for token in self.annotated_tokens:
 			bcolour = class_button.rgb_format(get_button_bcolour[token[0]])
 			fcolour = class_button.rgb_format(get_button_fcolour[token[0]])
-			str += "<span class='someToken' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
-
-		return str
+			_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
+			token_pos += 1
+		return _str
 
 	def str_to_span(self, str):
 		tokens = nltk.word_tokenize(str)

@@ -5,11 +5,17 @@ $(function() {
 $contentArea.mouseup(function(event) {
 	if (!editMode) {
 		var token = cleanString(window.getSelection().toString());
+		console.log("here!!!");
+		var name = $(window.getSelection().getRangeAt(0).startContainer.parentNode).attr('name');
+	
 		if (token != undefined) {
 			if (selection_mode == "relation") {
 
 				if (words.length <= 1) {
-					mark(words, $contentArea, token); 
+					mark(words, $contentArea, token);
+					
+					words_pos.push(name);
+					console.log(words_pos);
 				} else {
 					alert("Only "+(words.length+1)+" tokens were selection. You must highlight 2 unique tokens.");
 				}
@@ -128,6 +134,7 @@ function get_annotated_results() {
 
 $(".undo").on('click', function() {
 	words.pop();
+	words_pos.pop();
 	mark(words, $contentArea, ""); 
 });
 

@@ -85,7 +85,7 @@ class RelationButton:
 	def output_relation_plain(self):
 		_str = ""
 		for relation in self.relations:
-			_str += "%s\t%s\t%s\n"%(relation[0], relation[1], relation[2])
+			_str += "%s\t%s\t%s\n"%(relation[0][0], relation[1][0], relation[2])
 		return _str
 
 

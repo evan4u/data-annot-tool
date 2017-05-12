@@ -28,8 +28,9 @@ function addTokensToClass(classAnnot) {
 
 /* maps tokns to a relation, called when class button click */
 function addTokensToRelation(relation) {
-	send_new_relation({'relation': relation, 'domain': words[0], 'range': words[1]})
+	send_new_relation({'relation': relation, 'domain': [words_pos[0], words[0]], 'range': [words_pos[1],words[1]]})
 	words = [];
+	words_pos = [];
 	mark(words, $contentArea, "");
 	
 }
@@ -200,18 +201,16 @@ function showRelationList(obj) {
 	else {
 		// displays relations based on click
 		button_clicked = $(obj).siblings('.relationButtons').html();
-		console.log(button_clicked)
 		var tmp = "";
 		for (var i = 0; i < relations.length; i++) {
 			if (relations[i][2] == button_clicked) {
-				tmp += relations[i][0]+"\t" +relations[i][1]+"\t" + relations[i][2] + "\n";
+				tmp += relations[i][0][0]+":"+relations[i][0][1]+"\t" +relations[i][1][0]+":"+relations[i][1][1]+"\t" + relations[i][2] + "\n";
 			}
 		}
 		$('.relationList').css('display', 'none'); 
 
 		if (tmp != "") {
 			$(span).html(tmp);
-			console.log(tmp)
 			$(span).css('display', 'block'); 
 		}
 
