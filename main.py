@@ -10,7 +10,12 @@ from buttons import ClassButton, RelationButton
 from bottle import Bottle, template, static_file, request, response, HTTPError, redirect, get
 import re
 
+from database import Database
+import session
+
 application = Bottle()
+
+COOKIE_NAME = 'sessionid'
 
 info = {
     'filename': "no file uploaded",
@@ -50,6 +55,11 @@ def js_library(filepath):
 
 @application.route('/default_annotation', method='POST')
 def default_annotation():
+    '''
+    Returns an Object containing:
+        'buttons': 2 array of containing [class, token] i.e [['Person', 'Evan'], ['O', 'is']]
+    '''
+
     data = request.json
     if data['className'] not in class_button.button_bcolour.keys():
         class_button.add_button(data['className'], data['bcolour'], data['fcolour'])
@@ -75,9 +85,11 @@ def update_annotation():
     data = request.json
     class_name = data['name']
     words = data['words']
-    fproc.update_annotation(class_name, words)
 
-    return fproc.token_to_span_colour(class_button)
+    db = Database()
+    fproc.update_annotation(db, class_name, words)
+
+    return fproc.token_to_span_colour(db, class_button)
 
 @application.route('/update_relation', method='POST')
 def update_relation():
@@ -93,11 +105,12 @@ def update_annotation():
     class_name = data['name']
     class_button.delete_button(class_name)
     fproc.delete_annotation(class_name)
-    return {'content':fproc.token_to_span_colour(class_button), 'buttons': class_button.get_html_format()}
+    return {'content':fproc.token_to_span_colour(db, class_button), 'buttons': class_button.get_html_format()}
 
 
 @application.route('/upload', method='POST')
 def do_upload():
+    db = Database()
     upload = request.files.get('upload')
     name, ext = os.path.splitext(upload.filename)
     filename = name+ext
@@ -120,16 +133,16 @@ def do_upload():
 
 
     if is_annot_file:
-        classes = fproc.parse_annotated_text(file_content)
+        classes = fproc.parse_annotated_text(db, file_content)        
         for cls in classes:
             if cls != 'O' and cls not in class_button.button_bcolour.keys():
                 class_button.add_button(cls, [255,0,0], [255,255,255])
         info['buttons'] = "".join(class_button.button_data_html)
-        output_content = fproc.token_to_span_colour(class_button)
+        output_content = fproc.token_to_span_colour(db, class_button)
         info['content'] = output_content
     else:
         info['content'] = fproc.str_to_span(file_content)
-        info['result'] = fproc.str_to_default_annotation(file_content)
+        info['result'] = fproc.str_to_default_annotation(file_content, db)
         info['buttons'] = ""
 
     redirect('/')
@@ -156,7 +169,7 @@ def switch_to_relation():
 @application.route('/switch_to_class', method='GET')
 def switch_to_class():
     buttons = class_button.get_html_format()
-    content = fproc.token_to_span_colour(class_button)
+    content = fproc.token_to_span_colour(db, class_button)
     return  {'content': content, 'buttons': buttons}
 
 if __name__ == '__main__':
