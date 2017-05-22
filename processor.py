@@ -25,15 +25,15 @@ class FileProcessor:
 		'''
 		Returns output string to a default value
 		'''
-		self.annotated_tokens = []
+		annotated_tokens = []
 		tokens = nltk.word_tokenize(upload_str)
 		output_str = ""
 		for token in tokens:
-			self.annotated_tokens.append(['O', token])
+			annotated_tokens.append(['O', token])
 			output_str += 'O\t%s\n'%token
 
 		# INSERST TO DB
-		session.insert_session(db, self.annotated_tokens)
+		session.insert_session(db, annotated_tokens)
 
 		return output_str
 
@@ -75,7 +75,7 @@ class FileProcessor:
 				new_annotated_tokens.append([annotated_tokens[i][0], annotated_tokens[i][1]])	
 			i += 1
 
-		self.annotated_tokens = new_annotated_tokens
+		annotated_tokens = new_annotated_tokens
 		session.update_session(db, sessionid, new_annotated_tokens)
 
 		return output_str
@@ -105,9 +105,12 @@ class FileProcessor:
 
 		sessionid = request.get_cookie('sessionid')
 		annotated_tokens = session.get_annotation(db, sessionid)
+		print ('new annots')
 		print (annotated_tokens)
 
 		for token in annotated_tokens:
+			print ("gets button color...")
+			print (token[0])
 			bcolour = class_button.rgb_format(get_button_bcolour[token[0]])
 			fcolour = class_button.rgb_format(get_button_fcolour[token[0]])
 			_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
@@ -123,13 +126,14 @@ class FileProcessor:
 		return output_str
 
 
-	def delete_annotation(self, class_name):
+	def delete_annotation(self, db, class_name):
 		'''
-		replances classes with default i.e O
+		replaces classes with default i.e O
 		'''
-		for i in range(len(self.annotated_tokens)):
-			if self.annotated_tokens[i][0] == str(class_name):
-				self.annotated_tokens[i][0] = "O"
+		annotated_tokens = session.get_annotation(db, request.get_cookie(sessionid))
+		for i in range(len(annotated_tokens)):
+			if annotated_tokens[i][0] == str(class_name):
+				annotated_tokens[i][0] = "O"
 
 
 	def parse_annotated_text(self, db, upload_str):
@@ -142,11 +146,12 @@ class FileProcessor:
 		for str in tmp_str_arr:
 			str_arr.append(re.split('\t\d+\t', str))
 
-		self.annotated_tokens = str_arr[:-1]
-		sessionid = session.insert_session(db, self.annotated_tokens)
-		#print (session.get_annotation(db, sessionid))
+		annotated_tokens = str_arr[:-1]
+		sessionid = session.insert_session(db, annotated_tokens)
+		print ('before parse function')
+		print (request.get_cookie('sesssiond'))
 
-		for token in self.annotated_tokens:
+		for token in annotated_tokens:
 			classes.add(token[0])
 
 		return classes

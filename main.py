@@ -25,12 +25,18 @@ info = {
 }
 
 
-fproc = FileProcessor()
 class_button = ClassButton()
 relation_button = RelationButton()
 
 @application.route('/')
 def index():
+
+    if request.get_cookie(COOKIE_NAME) is None:
+        print ('is no cookie')
+        import uuid
+        sessionid = str(uuid.uuid1())
+        response.set_cookie(COOKIE_NAME, sessionid)
+
     return template('views/index', info)
 
 
@@ -78,10 +84,12 @@ def add_relation_button():
 
 @application.route('/annotated_results', method='GET')
 def default_annotation():
+    fproc = FileProcessor()
     return fproc.output_annotated_str() + '\n' + relation_button.output_relation_plain()
     
 @application.route('/update_annotation', method='POST')
 def update_annotation():
+    fproc = FileProcessor()
     data = request.json
     class_name = data['name']
     words = data['words']
@@ -101,6 +109,7 @@ def update_relation():
 
 @application.route('/button_delete', method='POST')
 def update_annotation():
+    fproc = FileProcessor()
     data = request.json
     class_name = data['name']
     class_button.delete_button(class_name)
@@ -111,6 +120,7 @@ def update_annotation():
 @application.route('/upload', method='POST')
 def do_upload():
     db = Database()
+    fproc = FileProcessor()
     upload = request.files.get('upload')
     name, ext = os.path.splitext(upload.filename)
     filename = name+ext
@@ -127,16 +137,20 @@ def do_upload():
     is_annot_file = False
     for i in range(len(file_raw)):
         if file_raw[i] == 9:
-            print (file_raw[i+1])
             is_annot_file = file_raw[i+1] == 68 or 77
             break
 
-
+    
     if is_annot_file:
-        classes = fproc.parse_annotated_text(db, file_content)        
+        classes = fproc.parse_annotated_text(db, file_content)
+        print ('after parse function')
+        print (session.get_annotation(db, request.get_cookie('sesssiond')))
         for cls in classes:
             if cls != 'O' and cls not in class_button.button_bcolour.keys():
                 class_button.add_button(cls, [255,0,0], [255,255,255])
+
+        print ('is_annot_file')
+        print (session.get_annotation(db, request.get_cookie('sesssiond')))
         info['buttons'] = "".join(class_button.button_data_html)
         output_content = fproc.token_to_span_colour(db, class_button)
         info['content'] = output_content
@@ -150,6 +164,7 @@ def do_upload():
 
 @application.route('/save', method='POST')
 def save_file():
+    fproc = FileProcessor()
     data = request.json
     save_path = './annotated_results'
     complete_name = os.path.join(save_path, data['filename'])
@@ -168,6 +183,7 @@ def switch_to_relation():
 
 @application.route('/switch_to_class', method='GET')
 def switch_to_class():
+    fproc = FileProcessor()
     buttons = class_button.get_html_format()
     content = fproc.token_to_span_colour(db, class_button)
     return  {'content': content, 'buttons': buttons}
