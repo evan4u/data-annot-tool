@@ -99,22 +99,20 @@ class FileProcessor:
 
 	def token_to_span_colour(self, db, class_button):
 		_str = ""
-		get_button_bcolour = class_button.get_button_bcolour()
-		get_button_fcolour = class_button.get_button_fcolour()
+		colours = class_button.get_buttons(db)
 		token_pos = 1
-
 		sessionid = request.get_cookie('sessionid')
 		annotated_tokens = session.get_annotation(db, sessionid)
-		print ('new annots')
-		print (annotated_tokens)
 
-		for token in annotated_tokens:
-			print ("gets button color...")
-			print (token[0])
-			bcolour = class_button.rgb_format(get_button_bcolour[token[0]])
-			fcolour = class_button.rgb_format(get_button_fcolour[token[0]])
-			_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
-			token_pos += 1
+		if annotated_tokens is not None:
+			for token in annotated_tokens:
+				bcol = colours[token[0]]
+				bcolour = class_button.rgb_format(bcol)
+				fcolour = class_button.rgb_format(class_button.choose_fcolour(bcol))
+
+				_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
+				token_pos += 1
+
 		return _str
 
 	def str_to_span(self, str):
@@ -130,10 +128,15 @@ class FileProcessor:
 		'''
 		replaces classes with default i.e O
 		'''
-		annotated_tokens = session.get_annotation(db, request.get_cookie(sessionid))
-		for i in range(len(annotated_tokens)):
-			if annotated_tokens[i][0] == str(class_name):
-				annotated_tokens[i][0] = "O"
+		sessionid = request.get_cookie('sessionid')
+		annotated_tokens = session.get_annotation(db, sessionid)
+		
+		if annotated_tokens:
+			for i in range(len(annotated_tokens)):
+				if annotated_tokens[i][0] == str(class_name):
+					annotated_tokens[i][0] = "O"
+
+		session.update_session(db, sessionid, annotated_tokens)
 
 
 	def parse_annotated_text(self, db, upload_str):

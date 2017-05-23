@@ -65,11 +65,12 @@ def default_annotation():
     Returns an Object containing:
         'buttons': 2 array of containing [class, token] i.e [['Person', 'Evan'], ['O', 'is']]
     '''
+    db = Database()
 
     data = request.json
     if data['className'] not in class_button.button_bcolour.keys():
-        class_button.add_button(data['className'], data['bcolour'], data['fcolour'])
-        info['buttons'] = class_button.get_html_format()
+        class_button.add_button(db, data['className'], data['bcolour'], data['fcolour'])
+        info['buttons'] = class_button.get_html_format(db)
         return {'buttons': info['buttons']}
 
 
@@ -109,12 +110,13 @@ def update_relation():
 
 @application.route('/button_delete', method='POST')
 def update_annotation():
+    db = Database()
     fproc = FileProcessor()
     data = request.json
     class_name = data['name']
-    class_button.delete_button(class_name)
-    fproc.delete_annotation(class_name)
-    return {'content':fproc.token_to_span_colour(db, class_button), 'buttons': class_button.get_html_format()}
+    class_button.delete_button(db, class_name)
+    fproc.delete_annotation(db, class_name)
+    return {'content':fproc.token_to_span_colour(db, class_button), 'buttons': class_button.get_html_format(db)}
 
 
 @application.route('/upload', method='POST')
@@ -184,7 +186,7 @@ def switch_to_relation():
 @application.route('/switch_to_class', method='GET')
 def switch_to_class():
     fproc = FileProcessor()
-    buttons = class_button.get_html_format()
+    buttons = class_button.get_html_format(db)
     content = fproc.token_to_span_colour(db, class_button)
     return  {'content': content, 'buttons': buttons}
 

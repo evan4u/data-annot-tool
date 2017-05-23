@@ -4,7 +4,7 @@ from bottle import response, request
 
 def active_session(db, sessionid):
 	'''
-	Returns active
+	Returns active sessionid data
 	'''
 	cur = db.cursor()
 	sql = 'SELECT * FROM sessions WHERE sessionid=?'
@@ -20,7 +20,7 @@ def insert_session(db, annotated_tokens):
 	cur = db.cursor()
 	sql = "INSERT INTO sessions (sessionid, classannotations) VALUES (?, ?)"
 	sessionid = request.get_cookie('sessionid')
-	
+
 	if active_session(db, sessionid):
 		update_session(db, sessionid, annotated_tokens)
 	else:

@@ -47,6 +47,12 @@ CREATE TABLE sessions (
             classannotations text
 );
 
+DROP TABLE IF EXISTS buttoncolours;
+CREATE TABLE buttoncolours (
+            sessionid text unique primary key,
+            colour text,
+            FOREIGN KEY(sessionid) REFERENCES sessions(sessionid)
+);
 
 """
 
