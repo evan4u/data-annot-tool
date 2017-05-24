@@ -43,8 +43,6 @@ class FileProcessor:
 		Returns output string to a default value and updates the annotated data
 		'''
 
-		#json.loads('["foo", {"bar":["baz", null, 1.0, 2]}]')
-
 		sessionid = request.get_cookie('sessionid')
 		new_annotated_tokens = []
 		output_str = ""
@@ -80,19 +78,17 @@ class FileProcessor:
 
 		return output_str
 
-	def output_annotated_str(self, relation_annots=None):
+	def output_annotated_str(self, db, relation_annots=None):
 		'''
 		Returns annotated output in string format for saving and displaying
 		'''
 		output_str = ""
 		token_pos = 1
-		for token in self.annotated_tokens:
+		annotated_tokens = session.get_annotation(db, request.get_cookie('sessionid'))
+
+		for token in annotated_tokens:
 			output_str += "%s\t%s\t%s\n"%(token[0], token_pos, token[1])
 			token_pos += 1
-
-		#if relation_annots:
-		#	for token in relation_annots:
-
 
 		return output_str
 
@@ -146,13 +142,11 @@ class FileProcessor:
 		classes = set()
 		tmp_str_arr = upload_str.split('\n')
 		str_arr = []
-		for str in tmp_str_arr:
-			str_arr.append(re.split('\t\d+\t', str))
+		for _str in tmp_str_arr:
+			str_arr.append(re.split('\t\d+\t', _str))
 
 		annotated_tokens = str_arr[:-1]
 		sessionid = session.insert_session(db, annotated_tokens)
-		print ('before parse function')
-		print (request.get_cookie('sesssiond'))
 
 		for token in annotated_tokens:
 			classes.add(token[0])

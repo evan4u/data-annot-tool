@@ -25,12 +25,13 @@ class Database:
 
     def cursor(self):
         """Return a cursor on the database"""
-
+        if not self.conn and not self.conn.open:
+            self.conn = sqlite3.connect(self.dbname)
+        
         return self.conn.cursor()
 
     def commit(self):
         """Commit pending changes"""
-
         self.conn.commit()
 
 
@@ -38,6 +39,9 @@ class Database:
         """Create and initialise the database tables
         This will have the effect of overwriting any existing
         data."""
+
+    def close(self):
+        self.conn.close()
         
         
         sql = """

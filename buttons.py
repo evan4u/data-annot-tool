@@ -3,13 +3,9 @@ import random
 from bottle import request
 import json
 from collections import OrderedDict
+#from database import Database
 
 class ClassButton:
-	button_bcolour = {"O": [245, 245, 245]}
-	button_fcolour = {"O": [0, 0, 0]}
-	button_data_html = ['<button class="classButtons O" style="width:100%; background-color:rgb(255,255,255); color:rgb(0,0,0); margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">O</button>']
-	last_button_added = ""
-	word_class = []
 
 	def __init__(self):
 		print ("starting class button generator...")
@@ -17,8 +13,9 @@ class ClassButton:
 	def add_button(self, db, class_name, bcolour, fcolour, random=True):
 		buttons = self.get_buttons(db)
 		colour = self.random_colour()
-		cur = db.cursor()
+		
 		sessionid = request.get_cookie('sessionid')
+		cur = db.cursor()
 
 		if buttons: # IF AN ACTIVE SESSION
 			if class_name not in buttons:
@@ -33,11 +30,6 @@ class ClassButton:
 
 		db.commit()
 
-		self.button_fcolour[class_name] = self.choose_fcolour(bcolour)
-		new_button = '<button class="classButtons '+class_name+'" style="width:100%; background-color:'+self.rgb_format(buttons[class_name])+'; color:'+self.rgb_format(self.button_fcolour[class_name])+'; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+class_name+'</button>'
-			
-		self.button_data_html.append(new_button)
-		self.last_button_added = new_button
 
 	def get_buttons(self, db):
 		cur = db.cursor()
@@ -64,11 +56,6 @@ class ClassButton:
 			db.commit()
 
 
-			#for i in range(len(self.button_data_html)):
-			#	if class_name in self.button_data_html[i]:
-			#		del self.button_data_html[i]
-
-
 	def get_html_format(self, db):
 		buttons = self.get_buttons(db)
 		buttons_html = ""
@@ -90,12 +77,6 @@ class ClassButton:
 
 	def get_last_button_html(self):
 		return self.last_button_added
-
-	def get_button_bcolour(self):
-		return self.button_bcolour
-
-	def get_button_fcolour(self):
-		return self.button_fcolour
 
 	def random_colour(self):
 		return [random.randint(0,255),random.randint(0,255),random.randint(0,255)]
@@ -140,8 +121,4 @@ class RelationButton:
 		for relation in self.relations:
 			_str += "%s\t%s\t%s\n"%(relation[0][0], relation[1][0], relation[2])
 		return _str
-
-
-
-
 
