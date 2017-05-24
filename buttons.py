@@ -9,6 +9,7 @@ class ClassButton:
 
 	def __init__(self):
 		print ("starting class button generator...")
+		self.sessionid = request.get_cookie('sessionid')
 
 	def add_button(self, db, class_name, bcolour, fcolour, random=True):
 		buttons = self.get_buttons(db)
@@ -98,27 +99,113 @@ class RelationButton:
 
 	def __init__(self):
 		print ("starting relation button generator...")
+		self.sessionid = request.get_cookie('sessionid')
 
-	def add_button(self, class_name, random=True):
-		self.button_names.append(class_name)
-		#new_button = '<div class="buttonContainer"><div class="relationButtons '+class_name+'" onclick="classButtonHandler(this)">'+class_name+' <div class="relPulldown" onclick="showRelationList(this)">&#x25BC;<span class="relationList" >s</span></div>'
-		div_left = '<div class="buttonContainer"><div class="relationButtons '+class_name+'" onclick="classButtonHandler(this)"">'+class_name+'</div>'
-		div_right = '</div>'
+	def add_button(self, db, class_name, random=True):
+		#relations = self.get_buttons(db)
+		#self.button_names.append(class_name)
 		
-		pull_down = '<div class="relPulldown" onclick="showRelationList(this)">&#x25BC;</div><div class="listContainer"><pre class="relationList"></pre></div>'
-		button_html = div_left+pull_down+div_right
-
-		self.button_data_html.append(button_html)
-
-	def add_relation(self, _range, domain, relation):
-		self.relations.append([_range, domain, relation])
-
-	def get_html_format(self):
-		return "".join(self.button_data_html)
+		#div_left = '<div class="buttonContainer"><div class="relationButtons '+class_name+'" onclick="classButtonHandler(this)"">'+class_name+'</div>'
+		#div_right = '</div>'
 		
-	def output_relation_plain(self):
+		#pull_down = '<div class="relPulldown" onclick="showRelationList(this)">&#x25BC;</div><div class="listContainer"><pre class="relationList"></pre></div>'
+		#button_html = div_left+pull_down+div_right
+
+		#self.button_data_html.append(button_html)
+
+		## 
+		self.add_relation(db, -1, -1, class_name)
+
+		
+
+	def get_relations(self, db):
+		cur = db.cursor()
+		sql = "SELECT * FROM relations WHERE sessionid=?"
+		cur.execute(sql, (request.get_cookie('sessionid'),))
+
+		buttons = cur.fetchone()
+		
+		if buttons:
+			return json.loads(buttons[1])
+
+		return None
+
+	def add_relation(self, db, _range, domain, relation):
+		#self.relations.append([_range, domain, relation])
+		sessionid = request.get_cookie('sessionid')
+		cur = db.cursor()
+		sql = "INSERT INTO relations (sessionid, domain, range, relation) VALUES (?,?,?,?)"
+		cur.execute(sql, (sessionid, json.dumps(_range), json.dumps(domain), relation))
+		db.commit()
+
+	def get_relations(self, db, relation_name=None):
+		sessionid = request.get_cookie('sessionid')
+		cur = db.cursor()
+		sql = None
+		if relation_name:
+			sql = "SELECT * FROM relations WHERE sessionid=? AND relation=? ORDER BY range"
+			cur.execute(sql, (sessionid, relation_name))
+		else:
+			sql = "SELECT * FROM relations WHERE sessionid=? ORDER BY range"
+			cur.execute(sql, (sessionid,))
+
+		results = cur.fetchall()
+
+		if results:
+			#return results # includes session
+			relations = []
+			for result in results:
+				if result[1] != "-1":
+					# THE ORDER IS NEEDED FOR [domain, range, relation] 
+					relations.append([result[2],result[1],result[3]]) 
+
+			return relations
+
+		return None
+
+
+	def get_relation_buttons(self, db):
+		sessionid = request.get_cookie('sessionid')
+		cur = db.cursor()
+		sql = "SELECT relation FROM relations WHERE sessionid=? AND domain=? AND range=? ORDER BY relation"
+		cur.execute(sql, (sessionid, -1, -1))
+
+		results = cur.fetchall()
+
+		if results:
+			return [_cls[0] for _cls in results]
+
+		return None
+
+
+
+	def get_html_format(self, db):
+		#return "".join(self.button_data_html)
+
+		rbuttons = self.get_relation_buttons(db)
+		button_html = ""
+
+		if rbuttons:
+			for button in rbuttons:
+				div_left = '<div class="buttonContainer"><div class="relationButtons '+button+'" onclick="classButtonHandler(this)"">'+button+'</div>'
+				div_right = '</div>'
+				pull_down = '<div class="relPulldown" onclick="showRelationList(this)">&#x25BC;</div><div class="listContainer"><pre class="relationList"></pre></div>'
+				button_html += div_left+pull_down+div_right
+
+
+		return button_html
+
+	def output_relation_plain(self, db):
 		_str = ""
-		for relation in self.relations:
-			_str += "%s\t%s\t%s\n"%(relation[0][0], relation[1][0], relation[2])
+		relations = self.get_relations(db)
+		if relations:
+			for relation in relations:
+				if relation[1] != "-1":
+					_range = json.loads(relation[0])[0]
+					domain = json.loads(relation[1])[0]
+					_str += "%s\t%s\t%s\n"%(_range, domain, relation[2])
+
+		print ("str")
+		print (_str)
 		return _str
 

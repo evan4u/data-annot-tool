@@ -39,10 +39,6 @@ class Database:
         """Create and initialise the database tables
         This will have the effect of overwriting any existing
         data."""
-
-    def close(self):
-        self.conn.close()
-        
         
         sql = """
 DROP TABLE IF EXISTS sessions;
@@ -55,6 +51,15 @@ DROP TABLE IF EXISTS buttoncolours;
 CREATE TABLE buttoncolours (
             sessionid text unique primary key,
             colour text,
+            FOREIGN KEY(sessionid) REFERENCES sessions(sessionid)
+);
+
+DROP TABLE IF EXISTS relations;
+CREATE TABLE relations (
+            sessionid text,
+            range text,
+            domain text,
+            relation text,
             FOREIGN KEY(sessionid) REFERENCES sessions(sessionid)
 );
 

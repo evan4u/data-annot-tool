@@ -194,7 +194,6 @@ function classButtonHandler(obj) {
 
 function showRelationList(obj) {
 	var span = $(obj).siblings('.listContainer').find('.relationList');
-	console.log($(span).html())
 	if ($(span).css('display') == 'block') {
 		$(span).css('display', 'none');
 	} 
@@ -204,7 +203,10 @@ function showRelationList(obj) {
 		var tmp = "";
 		for (var i = 0; i < relations.length; i++) {
 			if (relations[i][2] == button_clicked) {
-				tmp += relations[i][0][0]+":"+relations[i][0][1]+"\t" +relations[i][1][0]+":"+relations[i][1][1]+"\t" + relations[i][2] + "\n";
+
+				range = JSON.parse(relations[i][0])
+				domain = JSON.parse(relations[i][1])
+				tmp += range[0]+":"+range[1]+"\t" +domain[0]+":"+domain[1]+"\t" + relations[i][2] + "\n";
 			}
 		}
 		$('.relationList').css('display', 'none'); 
@@ -212,11 +214,13 @@ function showRelationList(obj) {
 		if (tmp != "") {
 			$(span).html(tmp);
 			$(span).css('display', 'block'); 
+
 		}
 
 		
 		
 	}
+	console.log(relations)
 }
 
 /*

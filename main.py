@@ -25,7 +25,7 @@ info = {
 }
 
 
-relation_button = RelationButton()
+
 
 @application.route('/')
 def index():
@@ -77,16 +77,22 @@ def default_annotation():
 @application.route('/add_relation_button', method='POST')
 def add_relation_button():
     data = request.json
+    db = Database()
+    relation_button = RelationButton()
+
     if data['className'] not in relation_button.button_names:
-        relation_button.add_button(data['className'])
-        info['buttons'] = relation_button.get_html_format()
+        relation_button.add_button(db, data['className'])
+        info['buttons'] = relation_button.get_html_format(db)
         return {'buttons': info['buttons']}
 
 
 @application.route('/annotated_results', method='GET')
 def default_annotation():
     fproc = FileProcessor()
-    return fproc.output_annotated_str() + '\n' + relation_button.output_relation_plain()
+    db = Database()
+    relation_button = RelationButton()
+
+    return fproc.output_annotated_str(db) + '\n' + relation_button.output_relation_plain(db)
     
 @application.route('/update_annotation', method='POST')
 def update_annotation():
@@ -104,8 +110,11 @@ def update_annotation():
 @application.route('/update_relation', method='POST')
 def update_relation():
     data = request.json
-    relation_button.add_relation(data['domain'], data['range'], data['relation'])
-    return {'output': relation_button.output_relation_plain(), 'relations': relation_button.relations}
+    db = Database()
+    relation_button = RelationButton()
+
+    relation_button.add_relation(db, data['domain'], data['range'], data['relation'])
+    return {'output': relation_button.output_relation_plain(db), 'relations': relation_button.get_relations(db)}
 
 
 
@@ -183,7 +192,10 @@ def save_file():
 
 @application.route('/switch_to_relation', method='GET')
 def switch_to_relation():
-    buttons = relation_button.get_html_format()
+    db = Database()
+    relation_button = RelationButton()
+    
+    buttons = relation_button.get_html_format(db)
     print ('relation buttons')
     print (buttons)
     return  {'buttons': buttons}
