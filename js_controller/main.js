@@ -180,7 +180,6 @@ $("#classmode").on('click', function() {
 		type: 'GET',
 		contentType: 'application/json',
 		success: function(json) {
-			console.log(json['content'])
 			$contentArea.html(json['content']);
 			$buttonArea.html(json['buttons']);
 		},
@@ -189,6 +188,25 @@ $("#classmode").on('click', function() {
 		}
 	});	
 });
+
+$("#namedentities").on('click', function() {
+	content = ""
+	if (content == "") {
+		json = {'content': content}
+		console.log('INSIDE THINY');
+		$.ajax({
+			url: '/get_named_entity',
+			type: 'POST',
+			data: JSON.stringify(json),
+			contentType: 'application/json',
+			success: function(data) {
+				$contentArea.html(data['content'])
+			},
+			error: function() {
+				alert("SOMETHING IS NOT RIGHT");
+			}
+		});
+	}});
 
 
 
@@ -215,6 +233,7 @@ function saveButton() {
 		});
 	}
 }
+
 
 
 

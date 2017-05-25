@@ -24,7 +24,7 @@ class ClassButton:
 				sql = "UPDATE buttoncolours SET colour=? WHERE sessionid=?"
 				cur.execute(sql, (json.dumps(buttons), sessionid))
 		else:
-			buttons = {'O': [245, 245, 245],class_name: colour,}
+			buttons = {'O': [245, 245, 245], class_name: colour,}
 
 			sql = "INSERT INTO buttoncolours (sessionid, colour) VALUES (?, ?)"
 			cur.execute(sql, (sessionid, json.dumps(buttons)))
@@ -200,12 +200,10 @@ class RelationButton:
 		relations = self.get_relations(db)
 		if relations:
 			for relation in relations:
-				if relation[1] != "-1":
+				if relation[1] != "-1": # ensures not the dummy relations used to generate buttons
 					_range = json.loads(relation[0])[0]
 					domain = json.loads(relation[1])[0]
 					_str += "%s\t%s\t%s\n"%(_range, domain, relation[2])
 
-		print ("str")
-		print (_str)
 		return _str
 

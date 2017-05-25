@@ -12,6 +12,7 @@ import re
 
 from database import Database
 import session
+import uuid
 
 application = Bottle()
 
@@ -25,15 +26,12 @@ info = {
 }
 
 
-
-
 @application.route('/')
 def index():
 
+    sessionid = str(uuid.uuid1())
     if request.get_cookie(COOKIE_NAME) is None:
         print ('is no cookie')
-        import uuid
-        sessionid = str(uuid.uuid1())
         response.set_cookie(COOKIE_NAME, sessionid)
 
     return template('views/index', info)
@@ -181,12 +179,14 @@ def do_upload():
 
 @application.route('/save', method='POST')
 def save_file():
+    db = Database()
     fproc = FileProcessor()
+    relation_button = RelationButton()
     data = request.json
     save_path = './annotated_results'
     complete_name = os.path.join(save_path, data['filename'])
     text_file = open(complete_name, "w")
-    text_file.write(fproc.output_annotated_str(db))
+    text_file.write(fproc.output_annotated_str(db) + '\n' + relation_button.output_relation_plain(db))
     text_file.close()
 
 
@@ -194,7 +194,7 @@ def save_file():
 def switch_to_relation():
     db = Database()
     relation_button = RelationButton()
-    
+
     buttons = relation_button.get_html_format(db)
     print ('relation buttons')
     print (buttons)
@@ -205,10 +205,30 @@ def switch_to_relation():
 def switch_to_class():
     fproc = FileProcessor()
     class_button = ClassButton()
+    db = Database()
 
     buttons = class_button.get_html_format(db)
     content = fproc.token_to_span_colour(db, class_button)
     return  {'content': content, 'buttons': buttons}
+
+@application.route('/get_named_entity', method='POST')
+def get_named_entity():
+    fproc = FileProcessor()
+    class_button = ClassButton()
+    db = Database()
+
+
+    annotations = session.get_annotation(db, request.get_cookie(COOKIE_NAME))
+    annotations = [annot[1] for annot in annotations]
+    
+
+    #text_content = "Evan is at Macquarie University and likes Evan Bernardez."
+    text_content =  " ".join(annotations) 
+    print (text_content)
+
+    content = fproc.token_to_span_colour(db, class_button, text_str=text_content)
+    
+    return  {'content': content}
 
 if __name__ == '__main__':
     application.run(debug=True, port=8010)

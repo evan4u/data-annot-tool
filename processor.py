@@ -9,7 +9,6 @@ import session
 
 class FileProcessor:
 
-	annotated_tokens = []
 
 	def __init__(self):
 		print ("starting file processor...")
@@ -93,21 +92,35 @@ class FileProcessor:
 		return output_str
 
 
-	def token_to_span_colour(self, db, class_button):
+	def token_to_span_colour(self, db, class_button, text_str=None):
 		_str = ""
 		colours = class_button.get_buttons(db)
 		token_pos = 1
 		sessionid = request.get_cookie('sessionid')
 		annotated_tokens = session.get_annotation(db, sessionid)
 
-		if annotated_tokens is not None:
+		named_entities = []
+		if text_str:
+			named_entities = self.get_named_entities(text_str)
+
+		if colours is not None:
 			for token in annotated_tokens:
 				bcol = colours[token[0]]
 				bcolour = class_button.rgb_format(bcol)
 				fcolour = class_button.rgb_format(class_button.choose_fcolour(bcol))
 
-				_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
+				if token[1] in named_entities:
+					_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'><strong><u>"+token[1]+"</u></strong></span> "
+				else:
+					_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
+				
 				token_pos += 1
+		else: # no buttons generated yet
+			for token in annotated_tokens:
+				if token[1] in named_entities:
+					_str += "<span><strong><u>%s</u></strong></span> "%token[1]
+				else:
+					_str += "<span>%s</span> "%token[1]
 
 		return _str
 
@@ -154,4 +167,26 @@ class FileProcessor:
 		return classes
 
 
+	def get_named_entities(self, text_str):
+		'''
+		Returns an array containing the named entities of a string
+		Process:
+			- POS tagging
+			- Extract Named Entities
+		'''		
+
+		# POS tagging
+		parse_tree = nltk.ne_chunk(nltk.tag.pos_tag(text_str.split()), binary=True)
+		named_entities = []
+
+		# extracts named entities
+		for t in parse_tree.subtrees():
+		    if t.label() == 'NE':
+		        _str = ""
+		        for tok in t:
+		            _str += tok[0]+" "
+
+		        named_entities.append(_str[:-1]) 
+
+		return named_entities
 

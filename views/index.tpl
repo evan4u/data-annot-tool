@@ -48,11 +48,21 @@ Author: Evan Bernardez, Macquarie University
                               </li>
                               <!-- INPUT MODE MENU -->
                               <li class="dropdown" >
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Annotation Mode <b class="caret"></b></a>
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Annotation Mode<b class="caret"></b></a>
                                     <ul class="dropdown-menu" >
                                           <li> <a id='classmode' href="javascript:void(0);">Class</a> </li>
                                           <li class="divider"></li>
                                           <li> <a id='relationmode'href="javascript:void(0);">Relation</a> </li>
+                                    </ul>
+                              </li>
+
+
+                              <!-- INPUT MODE MENU -->
+                              <li class="dropdown" >
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Marker<b class="caret"></b></a>
+                                    <ul class="dropdown-menu" >
+                                          <li> <a id='namedentities' href="javascript:void(0);">Named Entities</a> </li>
+                                          <li class="divider"></li>
                                     </ul>
                               </li>
                         </ul>
