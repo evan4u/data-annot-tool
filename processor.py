@@ -103,32 +103,38 @@ class FileProcessor:
 		if text_str:
 			named_entities = self.get_named_entities(text_str)
 
-		if colours is not None:
-			for token in annotated_tokens:
-				bcol = colours[token[0]]
-				bcolour = class_button.rgb_format(bcol)
-				fcolour = class_button.rgb_format(class_button.choose_fcolour(bcol))
 
-				if token[1] in named_entities:
-					_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'><strong><u>"+token[1]+"</u></strong></span> "
-				else:
-					_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
-				
-				token_pos += 1
-		else: # no buttons generated yet
-			for token in annotated_tokens:
-				if token[1] in named_entities:
-					_str += "<span><strong><u>%s</u></strong></span> "%token[1]
-				else:
-					_str += "<span>%s</span> "%token[1]
+		if annotated_tokens:
+			if colours is not None:
+				for token in annotated_tokens:
+
+					bcol = colours[token[0]]
+					bcolour = class_button.rgb_format(bcol)
+					fcolour = class_button.rgb_format(class_button.choose_fcolour(bcol))
+
+					if token[1] in named_entities:
+						_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'><strong><u>"+token[1]+"</u></strong></span> "
+					else:
+						_str += "<span class='someToken' name='"+str(token_pos)+"' style='color:" + fcolour+ "; background-color: "+bcolour + "'>"+token[1]+"</span> "
+					
+					token_pos += 1
+			else: # no buttons generated yet
+				for token in annotated_tokens:
+					if token[1] in named_entities:
+						_str += "<span style='border-bottom: 2px solid #eb7804;'><strong>%s</strong></span> "%token[1]
+					else:
+						_str += "<span>%s</span> "%token[1]
+
 
 		return _str
 
 	def str_to_span(self, str):
 		tokens = nltk.word_tokenize(str)
 		output_str = ""
+		token_pos = 1
 		for token in tokens:
-			output_str += "<span>%s</span> "%token
+			output_str += "<span name='%s'>%s</span> "%(token_pos, token)
+			token_pos += 1
 
 		return output_str
 
@@ -153,13 +159,18 @@ class FileProcessor:
 		parses annotated data and returns the new classes created
 		'''
 		classes = set()
-		tmp_str_arr = upload_str.split('\n')
+
+		upload_str_arr = upload_str.split('\n\n')
+		tmp_str_arr = upload_str_arr[0].split('\n')
 		str_arr = []
+
+		# classes
 		for _str in tmp_str_arr:
 			str_arr.append(re.split('\t\d+\t', _str))
 
 		annotated_tokens = str_arr[:-1]
 		sessionid = session.insert_session(db, annotated_tokens)
+
 
 		for token in annotated_tokens:
 			classes.add(token[0])
@@ -167,15 +178,43 @@ class FileProcessor:
 		return classes
 
 
+	def parse_annotated_text_relations(self, db, upload_str, button):
+		'''
+		parses annotated data and returns the new classes created
+		'''
+		relations = set()
+
+		upload_str_arr = upload_str.split('\n\n')
+		tmp_str_arr = upload_str_arr[0].split('\n')
+		str_arr = []
+
+		annots = session.get_annotation(db, request.get_cookie('sessionid'))
+
+		# classes
+		tmp_str_arr = upload_str.split('\n')[:-1]
+		str_arr = []
+		for _str in tmp_str_arr:
+			token = list(filter(None, re.split(r'(\d+)\t(\d+)\t(\w.*)', _str)))
+			
+			if token[2] not in relations:
+				relations.add(token[2])
+				button.add_button(db, token[2])
+
+			button.add_relation(db, [token[0], annots[int(token[0])-1][1]], [token[1], annots[int(token[1])-1][1]], token[2])
+
+		return relations
+
+
 	def get_named_entities(self, text_str):
 		'''
 		Returns an array containing the named entities of a string
 		Process:
 			- POS tagging
+			- NE Tagging
 			- Extract Named Entities
 		'''		
 
-		# POS tagging
+		# POS & NE tagging
 		parse_tree = nltk.ne_chunk(nltk.tag.pos_tag(text_str.split()), binary=True)
 		named_entities = []
 

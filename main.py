@@ -109,11 +109,19 @@ def update_annotation():
 def update_relation():
     data = request.json
     db = Database()
-    relation_button = RelationButton()
 
+    relation_button = RelationButton()
     relation_button.add_relation(db, data['domain'], data['range'], data['relation'])
+    print ([data['domain'], data['range'], data['relation']])
+
     return {'output': relation_button.output_relation_plain(db), 'relations': relation_button.get_relations(db)}
 
+@application.route('/get_relations', method='GET')
+def get_relations():
+    db = Database()
+    relation_button = RelationButton()
+    
+    return {'relations':relation_button.get_relations(db)}
 
 
 @application.route('/button_delete', method='POST')
@@ -156,22 +164,29 @@ def do_upload():
             break
     
     if is_annot_file:
-        classes = fproc.parse_annotated_text(db, file_content)
+  
+        # SPLIT TO CLASS DATA AND RELATION DATA
+        file_content_split = file_content.split("\n\n")
+
+        classes = fproc.parse_annotated_text(db, file_content_split[0])
 
         for cls in classes:
             if cls != 'O':
-                print ("before adding")
-                print (db)
                 class_button.add_button(db, cls, [255,0,0], [255,255,255])
 
-        print ('is_annot_file')
-        print (session.get_annotation(db, request.get_cookie('sesssiond')))
+
+        relation_button = RelationButton()
+        relations = []
+        if len(file_content_split) > 1:
+            relations = fproc.parse_annotated_text_relations(db, file_content_split[1], relation_button)
+
         info['buttons'] = class_button.get_html_format(db)
         output_content = fproc.token_to_span_colour(db, class_button)
         info['content'] = output_content
+
     else:
-        info['content'] = fproc.str_to_span(file_content)
-        info['result'] = fproc.str_to_default_annotation(file_content, db)
+        info['content'] = fproc.str_to_span(file_content_split[0])
+        info['result'] = fproc.str_to_default_annotation(file_content_split[0], db)
         info['buttons'] = ""
 
     redirect('/')
@@ -182,9 +197,11 @@ def save_file():
     db = Database()
     fproc = FileProcessor()
     relation_button = RelationButton()
+
     data = request.json
     save_path = './annotated_results'
     complete_name = os.path.join(save_path, data['filename'])
+    
     text_file = open(complete_name, "w")
     text_file.write(fproc.output_annotated_str(db) + '\n' + relation_button.output_relation_plain(db))
     text_file.close()
@@ -196,8 +213,7 @@ def switch_to_relation():
     relation_button = RelationButton()
 
     buttons = relation_button.get_html_format(db)
-    print ('relation buttons')
-    print (buttons)
+    
     return  {'buttons': buttons}
 
 
@@ -209,6 +225,7 @@ def switch_to_class():
 
     buttons = class_button.get_html_format(db)
     content = fproc.token_to_span_colour(db, class_button)
+
     return  {'content': content, 'buttons': buttons}
 
 @application.route('/get_named_entity', method='POST')
@@ -217,15 +234,9 @@ def get_named_entity():
     class_button = ClassButton()
     db = Database()
 
-
     annotations = session.get_annotation(db, request.get_cookie(COOKIE_NAME))
     annotations = [annot[1] for annot in annotations]
-    
-
-    #text_content = "Evan is at Macquarie University and likes Evan Bernardez."
     text_content =  " ".join(annotations) 
-    print (text_content)
-
     content = fproc.token_to_span_colour(db, class_button, text_str=text_content)
     
     return  {'content': content}

@@ -105,6 +105,7 @@ $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event
 
 $("#uploadinput").change(function(event) {
 	this.form.submit();
+
 });
 
 
@@ -115,7 +116,6 @@ $('.collapse').on('shown.bs.collapse', function() {
 }).on('hidden.bs.collapse', function() {
 	$(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
 });
-
 
 function get_annotated_results() {
 	console.log("results...");
@@ -131,6 +131,7 @@ function get_annotated_results() {
 		}
 	});
 }
+
 
 $(".undo").on('click', function() {
 	words.pop();
@@ -160,6 +161,7 @@ $("#download").on('click', function() {
 $("#relationmode").on('click', function() {
 	selection_mode = "relation"
 	$("label[for='classname']").text("Add Relation:");
+	$("label[for='delete-toggle']").text("Delete Relation:");
 	$.ajax({
 		url: '/switch_to_relation',
 		type: 'GET',
@@ -175,6 +177,7 @@ $("#relationmode").on('click', function() {
 $("#classmode").on('click', function() {
 	selection_mode = "class"
 	$("label[for='classname']").text("Add Class:");
+	$("label[for='delete-toggle']").text("Delete Class:");
 	$.ajax({
 		url: '/switch_to_class',
 		type: 'GET',

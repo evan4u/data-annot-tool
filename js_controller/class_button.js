@@ -89,7 +89,7 @@ function send_new_relation(data) {
 		data: JSON.stringify(data),
 		contentType: 'application/json',
 		success: function(json) {
-			relations = json['relations']
+			relations = json['relation']
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");
@@ -199,6 +199,22 @@ function showRelationList(obj) {
 	} 
 	else {
 		// displays relations based on click
+		if (relations.length == 0) {
+			$.ajax({
+				url: '/get_relations',
+				type: 'GET',
+				contentType: 'application/json',
+				success: function(data) {
+					relations = data['relations'];
+
+					console.log(data['relations']);
+				},
+				error: function() {
+					alert("SOMETHING IS NOT RIGHT");
+				}
+			});
+		}
+
 		button_clicked = $(obj).siblings('.relationButtons').html();
 		var tmp = "";
 		for (var i = 0; i < relations.length; i++) {
@@ -216,11 +232,7 @@ function showRelationList(obj) {
 			$(span).css('display', 'block'); 
 
 		}
-
-		
-		
 	}
-	console.log(relations)
 }
 
 /*

@@ -60,16 +60,16 @@ class ClassButton:
 	def get_html_format(self, db):
 		buttons = self.get_buttons(db)
 		buttons_html = ""
-
-		for key in sorted(buttons.keys()):
-			value = buttons[key]
-			bcol = self.rgb_format(value)
-			fcol = self.rgb_format(self.choose_fcolour(value))
-			if key is 'O':
-				buttons_html = '<button class="classButtons '+key+'" style="width:100%; background-color:'+bcol+'; color:'+fcol+'; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+key+'</button>' + buttons_html
-			else:
-				buttons_html += '<button class="classButtons '+key+'" style="width:100%; background-color:'+bcol+'; color:'+fcol+'; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+key+'</button>'
-		
+		if buttons:
+			for key in sorted(buttons.keys()):
+				value = buttons[key]
+				bcol = self.rgb_format(value)
+				fcol = self.rgb_format(self.choose_fcolour(value))
+				if key is 'O':
+					buttons_html = '<button class="classButtons '+key+'" style="width:100%; background-color:'+bcol+'; color:'+fcol+'; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+key+'</button>' + buttons_html
+				else:
+					buttons_html += '<button class="classButtons '+key+'" style="width:100%; background-color:'+bcol+'; color:'+fcol+'; margin: 5px; border-radius: 4px; outline:none;" onclick="classButtonHandler(this)">'+key+'</button>'
+			
 		return buttons_html
 
 
@@ -201,6 +201,7 @@ class RelationButton:
 		if relations:
 			for relation in relations:
 				if relation[1] != "-1": # ensures not the dummy relations used to generate buttons
+					print (type(relation[0]))
 					_range = json.loads(relation[0])[0]
 					domain = json.loads(relation[1])[0]
 					_str += "%s\t%s\t%s\n"%(_range, domain, relation[2])
