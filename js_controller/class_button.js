@@ -83,13 +83,14 @@ function send_new_annot(data) {
 
 /* MAPS WORD 1 AND WORD 2 VIA RELATION */
 function send_new_relation(data) {
+	console.log(data);
 	$.ajax({
 		url: '/update_relation',
 		type: 'POST',
 		data: JSON.stringify(data),
 		contentType: 'application/json',
 		success: function(json) {
-			relations = json['relation']
+			relations = json['relations']
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");
@@ -104,8 +105,6 @@ function send_button_delete(data) {
 		data: JSON.stringify(data),
 		contentType: 'application/json',
 		success: function(json) {
-			//console.log(json)
-			console.log(json['buttons']);
 			$(".context").html(json['content']);
 			$("#buttonArea span").html(json['buttons']);
 		},
@@ -206,8 +205,6 @@ function showRelationList(obj) {
 				contentType: 'application/json',
 				success: function(data) {
 					relations = data['relations'];
-
-					console.log(data['relations']);
 				},
 				error: function() {
 					alert("SOMETHING IS NOT RIGHT");

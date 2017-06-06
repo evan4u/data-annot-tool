@@ -113,7 +113,7 @@ def update_relation():
     relation_button = RelationButton()
     relation_button.add_relation(db, data['domain'], data['range'], data['relation'])
     print ([data['domain'], data['range'], data['relation']])
-
+    print (relation_button.get_relations(db))
     return {'output': relation_button.output_relation_plain(db), 'relations': relation_button.get_relations(db)}
 
 @application.route('/get_relations', method='GET')
@@ -185,8 +185,8 @@ def do_upload():
         info['content'] = output_content
 
     else:
-        info['content'] = fproc.str_to_span(file_content_split[0])
-        info['result'] = fproc.str_to_default_annotation(file_content_split[0], db)
+        info['content'] = fproc.str_to_span(file_content)
+        info['result'] = fproc.str_to_default_annotation(file_content, db)
         info['buttons'] = ""
 
     redirect('/')

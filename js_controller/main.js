@@ -159,6 +159,9 @@ $("#download").on('click', function() {
 
 
 $("#relationmode").on('click', function() {
+	words = [];
+	words_pos = [];
+	mark(words, $contentArea, "");
 	selection_mode = "relation"
 	$("label[for='classname']").text("Add Relation:");
 	$("label[for='delete-toggle']").text("Delete Relation:");
@@ -175,6 +178,9 @@ $("#relationmode").on('click', function() {
 	});});
 
 $("#classmode").on('click', function() {
+	words = [];
+	words_pos = [];
+	mark(words, $contentArea, "");
 	selection_mode = "class"
 	$("label[for='classname']").text("Add Class:");
 	$("label[for='delete-toggle']").text("Delete Class:");
