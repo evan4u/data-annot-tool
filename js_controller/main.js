@@ -171,6 +171,8 @@ $("#relationmode").on('click', function() {
 		contentType: 'application/json',
 		success: function(json) {
 			$buttonArea.html(json['buttons']);
+			$('#modeswitchsel').html('Relation Selection')
+			$('#modeswitchsel').html('Delete Relation')
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");
@@ -191,6 +193,8 @@ $("#classmode").on('click', function() {
 		success: function(json) {
 			$contentArea.html(json['content']);
 			$buttonArea.html(json['buttons']);
+			$('#modeswitchsel').html('Class Selection')
+			$('#modeswitchsel').html('Delete Class')
 		},
 		error: function() {
 			alert("SOMETHING IS NOT RIGHT");
@@ -202,7 +206,6 @@ $("#namedentities").on('click', function() {
 	content = ""
 	if (content == "") {
 		json = {'content': content}
-		console.log('INSIDE THINY');
 		$.ajax({
 			url: '/get_named_entity',
 			type: 'POST',

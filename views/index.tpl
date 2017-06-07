@@ -44,6 +44,14 @@ Author: Evan Bernardez, Macquarie University
                                                       </form>
                                                 </a>
                                           </li>
+                                          <li class="divider"></li>
+                                          <!-- RESET SUBMENU -->
+                                          <li>
+                                                <a href="/reset" id="upload">
+                                                      Reset
+                                                </a>
+                                          </li>
+
                                     </ul>
                               </li>
                               <!-- INPUT MODE MENU -->
@@ -102,14 +110,14 @@ Author: Evan Bernardez, Macquarie University
 
                         <div class="panel panel-default" style="padding:5px; border:none; border-radius: 0; width:40%; float:left">      
                               <div class="panel-heading">
-                                    <h4 class="panel-title">Class Selection</h4> 
+                                    <h4 id="modeswitchsel" class="panel-title">{{mode}} Selection</h4> 
                               </div>                   
                               <div style="height:350px;">
                                     <div class="panel-body">
                                           <div class="panel panel-default">
                                                 <div  style="height:320px; overflow-y: scroll;">
                                                        <div id="buttonArea" class="form-group" style="padding:10px;">
-                                                            <label for="classname">Add Class:</label>
+                                                            <label for="classname">Add {{mode}}:</label>
                                                             <input type="text" class="form-control" id="classname" style="margin-bottom:10px;">
                                                             <!--
                                                             <div class="buttonContainer">
@@ -129,7 +137,7 @@ Author: Evan Bernardez, Macquarie University
                                     </div>   
                               </div>
                                     <div style="padding: 8px;" class="panel-heading">
-                                          <h4 style="width:100%" class="panel-title">Delete Classes:
+                                          <h4 style="width:100%" id="modeswitch" class="panel-title">Delete {{mode}}:
                                           <input style="padding-left:10px" id="toggle-annot" type="checkbox" name="my-checkbox" data-size="mini"></h4>
                                     </div>
                         </div>

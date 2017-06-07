@@ -5,13 +5,13 @@ import json
 
 from bottle import request, response
 
-import session
+from session import Session
 
-class FileProcessor:
+class FileProcessor(Session):
 
 
 	def __init__(self):
-		print ("starting file processor...")
+		self.sessionid = request.get_cookie('sessionid')
 
 	def save_file(self, str):
 		print ("saving...")
@@ -20,7 +20,7 @@ class FileProcessor:
 		print ("loading...")
 
 
-	def str_to_default_annotation(self, upload_str, db=None):
+	def str_to_default_annotation(self, db, upload_str):
 		'''
 		Returns output string to a default value
 		'''
@@ -32,7 +32,7 @@ class FileProcessor:
 			output_str += 'O\t%s\n'%token
 
 		# INSERST TO DB
-		session.insert_session(db, annotated_tokens)
+		self.insert_session(db, annotated_tokens)
 
 		return output_str
 
@@ -41,12 +41,10 @@ class FileProcessor:
 		'''
 		Returns output string to a default value and updates the annotated data
 		'''
-
-		sessionid = request.get_cookie('sessionid')
 		new_annotated_tokens = []
 		output_str = ""
 
-		annotated_tokens = session.get_annotation(db, sessionid)
+		annotated_tokens = self.get_annotation(db)
 		max_size = len(annotated_tokens)
 		i = 0
 		while i < max_size:
@@ -73,7 +71,7 @@ class FileProcessor:
 			i += 1
 
 		annotated_tokens = new_annotated_tokens
-		session.update_session(db, sessionid, new_annotated_tokens)
+		self.update_session(db, new_annotated_tokens)
 
 		return output_str
 
@@ -83,11 +81,12 @@ class FileProcessor:
 		'''
 		output_str = ""
 		token_pos = 1
-		annotated_tokens = session.get_annotation(db, request.get_cookie('sessionid'))
+		annotated_tokens = self.get_annotation(db)
 
-		for token in annotated_tokens:
-			output_str += "%s\t%s\t%s\n"%(token[0], token_pos, token[1])
-			token_pos += 1
+		if annotated_tokens:
+			for token in annotated_tokens:
+				output_str += "%s\t%s\t%s\n"%(token[0], token_pos, token[1])
+				token_pos += 1
 
 		return output_str
 
@@ -96,8 +95,7 @@ class FileProcessor:
 		_str = ""
 		colours = class_button.get_buttons(db)
 		token_pos = 1
-		sessionid = request.get_cookie('sessionid')
-		annotated_tokens = session.get_annotation(db, sessionid)
+		annotated_tokens = self.get_annotation(db)
 
 		named_entities = []
 		if text_str:
@@ -143,15 +141,14 @@ class FileProcessor:
 		'''
 		replaces classes with default i.e O
 		'''
-		sessionid = request.get_cookie('sessionid')
-		annotated_tokens = session.get_annotation(db, sessionid)
+		annotated_tokens = self.get_annotation(db)
 		
 		if annotated_tokens:
 			for i in range(len(annotated_tokens)):
 				if annotated_tokens[i][0] == str(class_name):
 					annotated_tokens[i][0] = "O"
 
-		session.update_session(db, sessionid, annotated_tokens)
+		self.update_session(db, annotated_tokens)
 
 
 	def parse_annotated_text(self, db, upload_str):
@@ -169,7 +166,7 @@ class FileProcessor:
 			str_arr.append(re.split('\t\d+\t', _str))
 
 		annotated_tokens = str_arr[:-1]
-		sessionid = session.insert_session(db, annotated_tokens)
+		self.insert_session(db, annotated_tokens)
 
 
 		for token in annotated_tokens:
@@ -188,7 +185,7 @@ class FileProcessor:
 		tmp_str_arr = upload_str_arr[0].split('\n')
 		str_arr = []
 
-		annots = session.get_annotation(db, request.get_cookie('sessionid'))
+		annots = self.get_annotation(db)
 
 		# classes
 		tmp_str_arr = upload_str.split('\n')[:-1]
@@ -228,4 +225,44 @@ class FileProcessor:
 		        named_entities.append(_str[:-1]) 
 
 		return named_entities
+
+
+	def get_content(self, db):
+		cur = db.cursor()
+		sql = "SELECT output FROM content WHERE sessionid=?"
+		cur.execute(sql, (self.sessionid,))
+
+		content = cur.fetchone()
+		
+		if content:
+			return content[0]
+
+		return ""
+
+	def get_filename(self, db):
+		cur = db.cursor()
+		sql = "SELECT filename FROM content WHERE sessionid=?"
+		cur.execute(sql, (self.sessionid,))
+
+		content = cur.fetchone()
+		
+		if content:
+			return content[0]
+
+		return ""
+
+	def store_content(self, db, name, content):
+		cur = db.cursor()
+
+		if self.get_content(db):
+			# OVERWRITE CONTENT
+			sql = "UPDATE content SET filename=?, output=? WHERE sessionid=?"
+			cur.execute(sql, (name, content, self.sessionid))
+		else:
+			# ADD TO CONTENT TABLE 
+			sql = "INSERT INTO content (sessionid, filename, output) VALUES (?, ?, ?)"
+			cur.execute(sql, (self.sessionid, name, content))
+
+		db.commit()
+
 

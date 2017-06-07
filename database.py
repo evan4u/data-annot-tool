@@ -60,8 +60,18 @@ CREATE TABLE relations (
             range text,
             domain text,
             relation text,
+            active text,
             FOREIGN KEY(sessionid) REFERENCES sessions(sessionid)
 );
+
+DROP TABLE IF EXISTS content;
+CREATE TABLE content (
+            sessionid text,
+            filename text,
+            output text,
+            FOREIGN KEY(sessionid) REFERENCES sessions(sessionid)
+);
+
 
 """
 

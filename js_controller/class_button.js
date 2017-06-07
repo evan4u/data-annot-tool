@@ -232,23 +232,5 @@ function showRelationList(obj) {
 	}
 }
 
-/*
-$(".relPulldown").hover(
-	function() {
-		$(".relationList").css('display', 'block'); 
-		$(this).append('<span class="relationList">s</span>');
-		//$(this).find('.relationList');
-		$(".relationList").css('display', 'block'); 
-		console.log("here");
-	}, 
-	function() {
-		//$(".relationList").css('display', 'none'); 
-		//'<span class="relationList" style="display: block;"></span>'
-		var clean = $(this).html().replace('<span class="relationList" style="display: block;">s</span>', "");
-		console.log(clean);
-		$(this).html(clean);
 
-  	}
-);
-*/
 
