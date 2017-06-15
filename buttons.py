@@ -168,7 +168,6 @@ class RelationButton:
 
 
 	def get_html_format(self, db):
-		#return "".join(self.button_data_html)
 
 		rbuttons = self.get_relation_buttons(db)
 		button_html = ""
@@ -195,4 +194,11 @@ class RelationButton:
 					_str += "%s\t%s\t%s\n"%(_range, domain, relation[2])
 
 		return _str
+
+
+	def delete_button(self, db, relation_name):
+		sql = "DELETE FROM relations WHERE relation=? AND sessionid=?"
+		cur = db.cursor()
+		cur.execute(sql, (relation_name, request.get_cookie('sessionid')))
+		db.commit()
 

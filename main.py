@@ -44,8 +44,6 @@ def index():
         print ("goes class")
         button = ClassButton()
 
-    print (mode)
-
     class_button = ClassButton()
     info = {
         'filename': fproc.get_filename(db),
@@ -145,17 +143,22 @@ def get_relations():
 
 
 @application.route('/button_delete', method='POST')
-def update_annotation():
+def delete_button():
     db = Database()
     fproc = FileProcessor()
     class_button = ClassButton()
-
     data = request.json
     class_name = data['name']
 
-    class_button.delete_button(db, class_name)
-    fproc.delete_annotation(db, class_name)
-    return {'content':fproc.token_to_span_colour(db, class_button), 'buttons': class_button.get_html_format(db)}
+    if fproc.is_relation(db):
+        relation_button = RelationButton()
+        relation_button.delete_button(db, class_name)
+        return {'content':fproc.token_to_span_colour(db, class_button), 'buttons': relation_button.get_html_format(db)}
+    else:
+        class_button.delete_button(db, class_name)
+        fproc.delete_annotation(db, class_name)
+        return {'content':fproc.token_to_span_colour(db, class_button), 'buttons': class_button.get_html_format(db)}
+
 
 
 @application.route('/upload', method='POST')
