@@ -16,26 +16,30 @@ class ClassButton:
 		self.sessionid = request.get_cookie('sessionid')
 
 	def add_button(self, db, class_name, bcolour, fcolour, random=True):
+		'''
+		Adds class buttons to database
+		'''
 		buttons = self.get_buttons(db)
-		colour = self.random_colour()
-		
-		sessionid = request.get_cookie('sessionid')
+		colour = self.random_colour()		
 		cur = db.cursor()
 
 		if buttons: # IF AN ACTIVE SESSION
 			if class_name not in buttons:
 				buttons.update({class_name: colour})
 				sql = "UPDATE buttoncolours SET colour=? WHERE sessionid=?"
-				cur.execute(sql, (json.dumps(buttons), sessionid))
+				cur.execute(sql, (json.dumps(buttons), self.sessionid))
 		else:
 			buttons = {'O': [245, 245, 245], class_name: colour,}
 			sql = "INSERT INTO buttoncolours (sessionid, colour) VALUES (?, ?)"
-			cur.execute(sql, (sessionid, json.dumps(buttons)))
+			cur.execute(sql, (self.sessionid, json.dumps(buttons)))
 
 		db.commit()
 
 
 	def get_buttons(self, db):
+		"""
+		Returns a list of buttons and its data from database
+		"""
 		cur = db.cursor()
 		sql = "SELECT * FROM buttoncolours WHERE sessionid=?"
 		cur.execute(sql, (request.get_cookie('sessionid'),))
@@ -49,6 +53,9 @@ class ClassButton:
 
 
 	def delete_button(self, db, class_name):
+		"""
+		Deletes button based on its class name from database
+		"""
 		bcolour = self.get_buttons(db)
 
 		if class_name in bcolour:
@@ -56,11 +63,14 @@ class ClassButton:
 			#buttons.update(button)
 			sql = "UPDATE buttoncolours SET colour=? WHERE sessionid=?"
 			cur = db.cursor()
-			cur.execute(sql, (json.dumps(bcolour), request.get_cookie('sessionid')))
+			cur.execute(sql, (json.dumps(bcolour), self.sessionid))
 			db.commit()
 
 
 	def get_html_format(self, db):
+		"""
+		Returns html format used for to produce output/interface
+		"""
 		buttons = self.get_buttons(db)
 		buttons_html = ""
 		if buttons:
@@ -76,11 +86,14 @@ class ClassButton:
 		return buttons_html
 
 
+	#######################################################
+	#
+	#	Code to pretty up the buttons
+	#
+	#######################################################
+
 	def rgb_format(self, col):
 		return "rgb(%s,%s,%s)"%(col[0],col[1],col[2])
-
-	def get_last_button_html(self):
-		return self.last_button_added
 
 	def random_colour(self):
 		return [random.randint(0,255),random.randint(0,255),random.randint(0,255)]
@@ -96,18 +109,29 @@ class ClassButton:
 
 
 class RelationButton:
-	button_names = []
-	relations = []
-	button_data_html = []
 
 	def __init__(self):
 		self.sessionid = request.get_cookie('sessionid')
 
 	def add_button(self, db, class_name, random=True):
+		"""
+		Adds relation button to database - for generating buttons
+		"""
 		self.add_relation(db, -1, -1, class_name)
 
+	def add_relation(self, db, _range, domain, relation):
+		"""
+		Adds relation button to database - for adding labels between a domain and range
+		"""
+		cur = db.cursor()
+		sql = "INSERT INTO relations (sessionid, domain, range, relation) VALUES (?,?,?,?)"
+		cur.execute(sql, (self.sessionid, json.dumps(_range), json.dumps(domain), relation))
+		db.commit()
 
 	def get_relations(self, db):
+		"""
+		Returns all relations
+		"""
 		cur = db.cursor()
 		sql = "SELECT * FROM relations WHERE sessionid=?"
 		cur.execute(sql, (self.sessionid,))
@@ -119,15 +143,10 @@ class RelationButton:
 
 		return None
 
-	def add_relation(self, db, _range, domain, relation):
-		cur = db.cursor()
-		sql = "INSERT INTO relations (sessionid, domain, range, relation) VALUES (?,?,?,?)"
-		print ("adding rel")
-		print ((self.sessionid, json.dumps(_range), json.dumps(domain), relation))
-		cur.execute(sql, (self.sessionid, json.dumps(_range), json.dumps(domain), relation))
-		db.commit()
-
 	def get_relations(self, db, relation_name=None):
+		"""
+		Returns all relations with option of specifying name
+		"""
 		cur = db.cursor()
 		sql = None
 		if relation_name:
@@ -154,6 +173,9 @@ class RelationButton:
 
 
 	def get_relation_buttons(self, db):
+		"""
+		Returns the relations labels
+		"""
 		cur = db.cursor()
 		sql = "SELECT relation FROM relations WHERE sessionid=? AND domain=? AND range=? ORDER BY relation"
 		cur.execute(sql, (self.sessionid, -1, -1))
@@ -168,7 +190,9 @@ class RelationButton:
 
 
 	def get_html_format(self, db):
-
+		"""
+		Returns relation button in html format inc. pull down toggle
+		"""
 		rbuttons = self.get_relation_buttons(db)
 		button_html = ""
 
@@ -183,12 +207,14 @@ class RelationButton:
 		return button_html
 
 	def output_relation_plain(self, db):
+		"""
+		Returns a string containing a list of relations
+		"""
 		_str = ""
 		relations = self.get_relations(db)
 		if relations:
 			for relation in relations:
 				if relation[1] != "-1": # ensures not the dummy relations used to generate buttons
-					print (type(relation[0]))
 					_range = json.loads(relation[0])[0]
 					domain = json.loads(relation[1])[0]
 					_str += "%s\t%s\t%s\n"%(_range, domain, relation[2])
@@ -197,6 +223,9 @@ class RelationButton:
 
 
 	def delete_button(self, db, relation_name):
+		"""
+		Removes relation label from database
+		"""
 		sql = "DELETE FROM relations WHERE relation=? AND sessionid=?"
 		cur = db.cursor()
 		cur.execute(sql, (relation_name, request.get_cookie('sessionid')))

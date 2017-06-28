@@ -96,9 +96,14 @@ def add_relation_button():
     db = Database()
     relation_button = RelationButton()
 
-    if data['className'] not in relation_button.button_names:
+    rels = relation_button.get_relation_buttons(db)
+    if rels:
+        if data['className'] not in rels:
+            print (relation_button.get_relation_buttons(db))
+            relation_button.add_button(db, data['className'])
+            return {'buttons': relation_button.get_html_format(db)}
+    else:
         relation_button.add_button(db, data['className'])
-        
         return {'buttons': relation_button.get_html_format(db)}
 
 
