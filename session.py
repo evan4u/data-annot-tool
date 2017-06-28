@@ -69,6 +69,9 @@ class Session:
 
 
 	def is_relation(self, db):
+		"""
+		Returns true if mode is current relation mode
+		"""
 		cur = db.cursor()
 		sql = 'SELECT active FROM relations WHERE sessionid=?'
 		cur.execute(sql, (self.sessionid,))
@@ -80,6 +83,9 @@ class Session:
 		return False
 
 	def set_relation_mode(self, db, mode, firsttime=False):
+		"""
+		sets annot mode to relation
+		"""
 		cur = db.cursor()
 		sql = 'SELECT active FROM relations WHERE sessionid=?'
 		cur.execute(sql, (self.sessionid,))
@@ -95,6 +101,9 @@ class Session:
 		db.commit()
 
 	def reset(self, db):
+		'''
+		Resets current session to default state
+		'''
 		sessionid = request.get_cookie('sessionid')
 
 		cur = db.cursor()

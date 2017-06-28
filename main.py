@@ -37,11 +37,9 @@ def index():
 
 
     if fproc.is_relation(db):
-        print ("goes rel")
         button = RelationButton()
         mode = "Relation"
     else:
-        print ("goes class")
         button = ClassButton()
 
     class_button = ClassButton()
@@ -99,7 +97,6 @@ def add_relation_button():
     rels = relation_button.get_relation_buttons(db)
     if rels:
         if data['className'] not in rels:
-            print (relation_button.get_relation_buttons(db))
             relation_button.add_button(db, data['className'])
             return {'buttons': relation_button.get_html_format(db)}
     else:
@@ -132,11 +129,9 @@ def update_annotation():
 def update_relation():
     data = request.json
     db = Database()
-
     relation_button = RelationButton()
     relation_button.add_relation(db, data['domain'], data['range'], data['relation'])
-    print ([data['domain'], data['range'], data['relation']])
-    print (relation_button.get_relations(db))
+    
     return {'output': relation_button.output_relation_plain(db), 'relations': relation_button.get_relations(db)}
 
 @application.route('/get_relations', method='GET')
