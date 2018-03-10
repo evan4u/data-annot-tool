@@ -5,7 +5,6 @@ $(function() {
 $contentArea.mouseup(function(event) {
 	if (!editMode) {
 		var token = cleanString(window.getSelection().toString());
-		console.log("here!!!");
 		var name = $(window.getSelection().getRangeAt(0).startContainer.parentNode).attr('name');
 	
 		if (token != undefined) {
